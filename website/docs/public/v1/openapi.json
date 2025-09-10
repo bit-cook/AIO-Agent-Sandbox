@@ -1,0 +1,3073 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "description": "\n- Browser\n    - VNC: [/vnc/index.html](/vnc/index.html)\n    - CDP: [/cdp/json/version](/cdp/json/version)\n- Terminal\n    - UI: [/terminal](/terminal)\n    - WebSocket: [/v1/shell/ws](/v1/shell/ws), The data format follows [xterm.js](https://xtermjs.org/)\n- Jupyter\n    - Notebook: [/jupyter](/jupyter)\n- MCP\n    - Streamable HTTP: [/mcp](/mcp) or [/v1/mcp](/v1/mcp)\n",
+    "version": "1.0.0.107"
+  },
+  "paths": {
+    "/v1/sandbox": {
+      "get": {
+        "tags": [
+          "sandbox"
+        ],
+        "summary": "Get Sandbox Context",
+        "description": "Get sandbox environment information",
+        "operationId": "sandbox_get_sandbox_context",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sandbox/packages/python": {
+      "get": {
+        "tags": [
+          "sandbox"
+        ],
+        "summary": "Python Packages",
+        "description": "Get installed packages by language",
+        "operationId": "sandbox_python_packages",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sandbox/packages/nodejs": {
+      "get": {
+        "tags": [
+          "sandbox"
+        ],
+        "summary": "Nodejs Packages",
+        "description": "Get installed packages by language",
+        "operationId": "sandbox_nodejs_packages",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shell/exec": {
+      "post": {
+        "tags": [
+          "shell"
+        ],
+        "summary": "Exec Command",
+        "description": "Execute command in the specified shell session\nSupports SSE streaming if Accept header contains 'text/event-stream'",
+        "operationId": "sandbox_exec_command",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShellExecRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shell/view": {
+      "post": {
+        "tags": [
+          "shell"
+        ],
+        "summary": "View Shell",
+        "description": "View output of the specified shell session\nSupports SSE streaming if Accept header contains 'text/event-stream'",
+        "operationId": "sandbox_view_shell",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShellViewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shell/wait": {
+      "post": {
+        "tags": [
+          "shell"
+        ],
+        "summary": "Wait For Process",
+        "description": "Wait for the process in the specified shell session to return",
+        "operationId": "sandbox_wait_for_process",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShellWaitRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shell/write": {
+      "post": {
+        "tags": [
+          "shell"
+        ],
+        "summary": "Write To Process",
+        "description": "Write input to the process in the specified shell session",
+        "operationId": "sandbox_write_to_process",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShellWriteToProcessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shell/kill": {
+      "post": {
+        "tags": [
+          "shell"
+        ],
+        "summary": "Kill Process",
+        "description": "Terminate the process in the specified shell session",
+        "operationId": "sandbox_kill_process",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShellKillProcessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/read": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Read File",
+        "description": "Read file content",
+        "operationId": "sandbox_read_file",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileReadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/write": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Write File",
+        "description": "Write file content",
+        "operationId": "sandbox_write_file",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileWriteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/replace": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Replace In File",
+        "description": "Replace string in file",
+        "operationId": "sandbox_replace_in_file",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/search": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Search In File",
+        "description": "Search in file content",
+        "operationId": "sandbox_search_in_file",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/find": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Find Files",
+        "description": "Find files by name pattern",
+        "operationId": "sandbox_find_files",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileFindRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/upload": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Upload File",
+        "description": "Upload file using streaming",
+        "operationId": "sandbox_upload_file",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_sandbox_upload_file"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/download": {
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Download File",
+        "description": "Download file using FileResponse",
+        "operationId": "sandbox_download_file",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/list": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "List Path",
+        "description": "List path contents with flexible options",
+        "operationId": "sandbox_list_path",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/file/str_replace_editor": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Str Replace Editor",
+        "description": "An filesystem editor tool that allows the agent to\n- view\n- create\n- navigate\n- edit files\nThe tool parameters are defined by Anthropic and are not editable.",
+        "operationId": "sandbox_str_replace_editor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StrReplaceEditorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jupyter/execute": {
+      "post": {
+        "tags": [
+          "jupyter"
+        ],
+        "summary": "Execute Jupyter Code",
+        "description": "Execute Python code using Jupyter kernel with session persistence\n\nThis endpoint allows you to execute Python code and get results back.\nYou can optionally specify a kernel_name (defaults to 'python3').\nUse session_id to maintain variable state across multiple requests.\nSessions automatically expire after 30 minutes of inactivity.",
+        "operationId": "sandbox_execute_jupyter_code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JupyterExecuteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jupyter/info": {
+      "get": {
+        "tags": [
+          "jupyter"
+        ],
+        "summary": "Jupyter Info",
+        "description": "Get information about available Jupyter kernels",
+        "operationId": "sandbox_jupyter_info",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jupyter/sessions": {
+      "get": {
+        "tags": [
+          "jupyter"
+        ],
+        "summary": "List Sessions",
+        "description": "List all active Jupyter sessions",
+        "operationId": "sandbox_list_sessions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "jupyter"
+        ],
+        "summary": "Cleanup All Sessions",
+        "description": "Cleanup all active sessions",
+        "operationId": "sandbox_cleanup_all_sessions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jupyter/sessions/{session_id}": {
+      "delete": {
+        "tags": [
+          "jupyter"
+        ],
+        "summary": "Cleanup Session",
+        "description": "Manually cleanup a specific session",
+        "operationId": "sandbox_cleanup_session",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nodejs/execute": {
+      "post": {
+        "tags": [
+          "nodejs"
+        ],
+        "summary": "Execute Nodejs Code",
+        "description": "Execute JavaScript code using Node.js\n\nThis endpoint allows you to execute JavaScript code and get results back.\nEach request creates a fresh execution environment that's cleaned up automatically.",
+        "operationId": "sandbox_execute_nodejs_code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodeJSExecuteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/nodejs/info": {
+      "get": {
+        "tags": [
+          "nodejs"
+        ],
+        "summary": "Nodejs Info",
+        "description": "Get information about Node.js runtime and available languages",
+        "operationId": "sandbox_nodejs_info",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mcp/{server_name}/tools": {
+      "get": {
+        "tags": [
+          "mcp",
+          "api_only"
+        ],
+        "summary": "List Mcp Tools",
+        "description": "List all available tools from the specified MCP server\n\nArgs:\n    server_name: The name of the MCP server as defined in mcp-servers.json\n\nReturns:\n    Response containing the list of available tools with their descriptions and parameters",
+        "operationId": "sandbox_list_mcp_tools",
+        "parameters": [
+          {
+            "name": "server_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Name of the MCP server",
+              "title": "Server Name"
+            },
+            "description": "Name of the MCP server"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_ListToolsResult_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mcp/{server_name}/tools/{tool_name}": {
+      "post": {
+        "tags": [
+          "mcp",
+          "api_only"
+        ],
+        "summary": "Execute Mcp Tool",
+        "description": "Execute a specific tool on the specified MCP server\n\nArgs:\n    server_name: The name of the MCP server as defined in mcp-servers.json\n    tool_name: The name of the tool to execute\n    arguments: Tool arguments dictionary\n\nReturns:\n    Response containing the tool execution results",
+        "operationId": "sandbox_execute_mcp_tool",
+        "parameters": [
+          {
+            "name": "server_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Name of the MCP server",
+              "title": "Server Name"
+            },
+            "description": "Name of the MCP server"
+          },
+          {
+            "name": "tool_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Name of the tool to execute",
+              "title": "Tool Name"
+            },
+            "description": "Name of the tool to execute"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "default": {},
+                "title": "Arguments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_CallToolResult_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mcp/servers": {
+      "get": {
+        "tags": [
+          "mcp",
+          "api_only"
+        ],
+        "summary": "List Mcp Servers",
+        "description": "List all configured MCP servers\n\nReturns:\n    Response containing the list of configured and filtered MCP servers",
+        "operationId": "sandbox_list_mcp_servers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_List_str__"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terminal": {
+      "get": {
+        "summary": "Serve Terminal",
+        "description": "Serve the terminal HTML page",
+        "operationId": "serve_terminal_terminal_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/browser/screenshot": {
+      "get": {
+        "summary": "Take Screenshot",
+        "description": "Take a screenshot of the current display.",
+        "operationId": "take_screenshot_screenshot_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "browser"
+        ]
+      }
+    },
+    "/v1/browser/actions": {
+      "post": {
+        "summary": "Execute Action",
+        "description": "Execute a validated action on the current display.",
+        "operationId": "execute_action_actions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/MoveToAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ClickAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MouseDownAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MouseUpAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RightClickAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DoubleClickAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DragToAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ScrollAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TypingAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PressAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/KeyDownAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/KeyUpAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HotkeyAction"
+                  }
+                ],
+                "title": "Action",
+                "discriminator": {
+                  "propertyName": "action_type",
+                  "mapping": {
+                    "MOVE_TO": "#/components/schemas/MoveToAction",
+                    "CLICK": "#/components/schemas/ClickAction",
+                    "MOUSE_DOWN": "#/components/schemas/MouseDownAction",
+                    "MOUSE_UP": "#/components/schemas/MouseUpAction",
+                    "RIGHT_CLICK": "#/components/schemas/RightClickAction",
+                    "DOUBLE_CLICK": "#/components/schemas/DoubleClickAction",
+                    "DRAG_TO": "#/components/schemas/DragToAction",
+                    "SCROLL": "#/components/schemas/ScrollAction",
+                    "TYPING": "#/components/schemas/TypingAction",
+                    "PRESS": "#/components/schemas/PressAction",
+                    "KEY_DOWN": "#/components/schemas/KeyDownAction",
+                    "KEY_UP": "#/components/schemas/KeyUpAction",
+                    "HOTKEY": "#/components/schemas/HotkeyAction"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Execute Action Actions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "browser"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Annotations": {
+        "properties": {
+          "audience": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "user",
+                    "assistant"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "Annotations"
+      },
+      "AudioContent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "audio",
+            "title": "Type"
+          },
+          "data": {
+            "type": "string",
+            "title": "Data"
+          },
+          "mimeType": {
+            "type": "string",
+            "title": "Mimetype"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Annotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type",
+          "data",
+          "mimeType"
+        ],
+        "title": "AudioContent",
+        "description": "Audio content for a message."
+      },
+      "BlobResourceContents": {
+        "properties": {
+          "uri": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Uri"
+          },
+          "mimeType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mimetype"
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "blob": {
+            "type": "string",
+            "title": "Blob"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "uri",
+          "blob"
+        ],
+        "title": "BlobResourceContents",
+        "description": "Binary contents of a resource."
+      },
+      "Body_sandbox_upload_file": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "path": {
+            "type": "string",
+            "title": "Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_sandbox_upload_file"
+      },
+      "CallToolResult": {
+        "properties": {
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "content": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TextContent"
+                },
+                {
+                  "$ref": "#/components/schemas/ImageContent"
+                },
+                {
+                  "$ref": "#/components/schemas/AudioContent"
+                },
+                {
+                  "$ref": "#/components/schemas/ResourceLink"
+                },
+                {
+                  "$ref": "#/components/schemas/EmbeddedResource"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "structuredContent": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Structuredcontent"
+          },
+          "isError": {
+            "type": "boolean",
+            "title": "Iserror",
+            "default": false
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "CallToolResult",
+        "description": "The server's response to a tool call."
+      },
+      "EmbeddedResource": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "resource",
+            "title": "Type"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextResourceContents"
+              },
+              {
+                "$ref": "#/components/schemas/BlobResourceContents"
+              }
+            ],
+            "title": "Resource"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Annotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type",
+          "resource"
+        ],
+        "title": "EmbeddedResource",
+        "description": "The contents of a resource, embedded into a prompt or tool call result.\n\nIt is up to the client how best to render embedded resources for the benefit\nof the LLM and/or the user."
+      },
+      "FileFindRequest": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Directory path to search"
+          },
+          "glob": {
+            "type": "string",
+            "title": "Glob",
+            "description": "Filename pattern (glob syntax)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "path",
+          "glob"
+        ],
+        "title": "FileFindRequest",
+        "description": "File find request"
+      },
+      "FileListRequest": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Directory path to list"
+          },
+          "recursive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recursive",
+            "description": "Whether to list recursively",
+            "default": false
+          },
+          "show_hidden": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Show Hidden",
+            "description": "Whether to show hidden files",
+            "default": true
+          },
+          "file_types": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Types",
+            "description": "Filter by file extensions (e.g., ['.py', '.txt'])"
+          },
+          "max_depth": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Depth",
+            "description": "Maximum depth for recursive listing"
+          },
+          "include_size": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Include Size",
+            "description": "Whether to include file size information",
+            "default": true
+          },
+          "include_permissions": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Include Permissions",
+            "description": "Whether to include file permissions",
+            "default": false
+          },
+          "sort_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sort By",
+            "description": "Sort by: name, size, modified, type",
+            "default": "name"
+          },
+          "sort_desc": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sort Desc",
+            "description": "Sort in descending order",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "title": "FileListRequest",
+        "description": "File list request"
+      },
+      "FileReadRequest": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File",
+            "description": "Absolute file path"
+          },
+          "start_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Line",
+            "description": "Start line (0-based)"
+          },
+          "end_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Line",
+            "description": "End line (not inclusive)"
+          },
+          "sudo": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sudo",
+            "description": "Whether to use sudo privileges",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "FileReadRequest",
+        "description": "File read request"
+      },
+      "FileReplaceRequest": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File",
+            "description": "Absolute file path"
+          },
+          "old_str": {
+            "type": "string",
+            "title": "Old Str",
+            "description": "Original string to replace"
+          },
+          "new_str": {
+            "type": "string",
+            "title": "New Str",
+            "description": "New string to replace with"
+          },
+          "sudo": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sudo",
+            "description": "Whether to use sudo privileges",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "old_str",
+          "new_str"
+        ],
+        "title": "FileReplaceRequest",
+        "description": "File content replacement request"
+      },
+      "FileSearchRequest": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File",
+            "description": "Absolute file path"
+          },
+          "regex": {
+            "type": "string",
+            "title": "Regex",
+            "description": "Regular expression pattern"
+          },
+          "sudo": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sudo",
+            "description": "Whether to use sudo privileges",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "regex"
+        ],
+        "title": "FileSearchRequest",
+        "description": "File content search request"
+      },
+      "FileWriteRequest": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File",
+            "description": "Absolute file path"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Content to write"
+          },
+          "append": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Append",
+            "description": "Whether to use append mode",
+            "default": false
+          },
+          "leading_newline": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Leading Newline",
+            "description": "Whether to add leading newline",
+            "default": false
+          },
+          "trailing_newline": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trailing Newline",
+            "description": "Whether to add trailing newline",
+            "default": false
+          },
+          "sudo": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sudo",
+            "description": "Whether to use sudo privileges",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "content"
+        ],
+        "title": "FileWriteRequest",
+        "description": "File write request"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageContent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "image",
+            "title": "Type"
+          },
+          "data": {
+            "type": "string",
+            "title": "Data"
+          },
+          "mimeType": {
+            "type": "string",
+            "title": "Mimetype"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Annotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type",
+          "data",
+          "mimeType"
+        ],
+        "title": "ImageContent",
+        "description": "Image content for a message."
+      },
+      "JupyterExecuteRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Python code to execute"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 300.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timeout",
+            "description": "Execution timeout in seconds",
+            "default": 30
+          },
+          "kernel_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kernel Name",
+            "description": "Kernel name to use (e.g., 'python3', 'python3.11'). Defaults to 'python3'",
+            "default": "python3"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id",
+            "description": "Session ID to maintain kernel state across requests"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "JupyterExecuteRequest",
+        "description": "Jupyter code execution request model"
+      },
+      "ListToolsResult": {
+        "properties": {
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nextcursor"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            },
+            "type": "array",
+            "title": "Tools"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "tools"
+        ],
+        "title": "ListToolsResult",
+        "description": "The server's response to a tools/list request from the client."
+      },
+      "NodeJSExecuteRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "JavaScript code to execute"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 300.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timeout",
+            "description": "Execution timeout in seconds",
+            "default": 30
+          },
+          "stdin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stdin",
+            "description": "Standard input for the process"
+          },
+          "files": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files",
+            "description": "Additional files to create in execution directory"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "NodeJSExecuteRequest"
+      },
+      "ResourceLink": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "uri": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Uri"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "mimeType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mimetype"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Annotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "type": {
+            "type": "string",
+            "const": "resource_link",
+            "title": "Type"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "name",
+          "uri",
+          "type"
+        ],
+        "title": "ResourceLink",
+        "description": "A resource that the server is capable of reading, included in a prompt or tool call result.\n\nNote: resource links returned by tools are not guaranteed to appear in the results of `resources/list` requests."
+      },
+      "Response": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Data returned from the operation"
+          }
+        },
+        "type": "object",
+        "title": "Response",
+        "description": "Generic response model for API interface return results"
+      },
+      "Response_CallToolResult_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CallToolResult"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Data returned from the operation"
+          }
+        },
+        "type": "object",
+        "title": "Response[CallToolResult]"
+      },
+      "Response_ListToolsResult_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ListToolsResult"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Data returned from the operation"
+          }
+        },
+        "type": "object",
+        "title": "Response[ListToolsResult]"
+      },
+      "Response_List_str__": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "Data returned from the operation"
+          }
+        },
+        "type": "object",
+        "title": "Response[List[str]]"
+      },
+      "ShellExecRequest": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "Unique identifier of the target shell session, if not provided, one will be automatically created"
+          },
+          "exec_dir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exec Dir",
+            "description": "Working directory for command execution (must use absolute path)"
+          },
+          "command": {
+            "type": "string",
+            "title": "Command",
+            "description": "Shell command to execute"
+          },
+          "async_mode": {
+            "type": "boolean",
+            "title": "Async Mode",
+            "description": "Whether to execute command asynchronously (default: False for async, False for synchronous execution)",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "command"
+        ],
+        "title": "ShellExecRequest",
+        "description": "Shell command execution request model"
+      },
+      "ShellKillProcessRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier of the target shell session"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ShellKillProcessRequest",
+        "description": "Request model for terminating a running process"
+      },
+      "ShellViewRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier of the target shell session"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ShellViewRequest",
+        "description": "Shell session content view request model"
+      },
+      "ShellWaitRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier of the target shell session"
+          },
+          "seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seconds",
+            "description": "Wait time (seconds)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ShellWaitRequest",
+        "description": "Shell process wait request model"
+      },
+      "ShellWriteToProcessRequest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique identifier of the target shell session"
+          },
+          "input": {
+            "type": "string",
+            "title": "Input",
+            "description": "Input content to write to the process"
+          },
+          "press_enter": {
+            "type": "boolean",
+            "title": "Press Enter",
+            "description": "Whether to press enter key after input"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "input",
+          "press_enter"
+        ],
+        "title": "ShellWriteToProcessRequest",
+        "description": "Request model for writing input to a running process"
+      },
+      "StrReplaceEditorRequest": {
+        "properties": {
+          "command": {
+            "type": "string",
+            "enum": [
+              "view",
+              "create",
+              "str_replace",
+              "insert",
+              "undo_edit"
+            ],
+            "title": "Command",
+            "description": "The commands to run. Allowed options are: `view`, `create`, `str_replace`, `insert`, `undo_edit`."
+          },
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Absolute path to file or directory, e.g. `/workspace/file.py` or `/workspace`."
+          },
+          "file_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Text",
+            "description": "Required parameter of `create` command, with the content of the file to be created."
+          },
+          "old_str": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Old Str",
+            "description": "Required parameter of `str_replace` command containing the string in `path` to replace."
+          },
+          "new_str": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Str",
+            "description": "Optional parameter of `str_replace` command containing the new string (if not given, no string will be added). Required parameter of `insert` command containing the string to insert."
+          },
+          "insert_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Insert Line",
+            "description": "Required parameter of `insert` command. The `new_str` will be inserted AFTER the line `insert_line` of `path`."
+          },
+          "view_range": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "View Range",
+            "description": "Optional parameter of `view` command when `path` points to a file. If none is given, the full file is shown. If provided, the file will be shown in the indicated line number range, e.g. [11, 12] will show lines 11 and 12. Indexing at 1 to start. Setting `[start_line, -1]` shows all lines from `start_line` to the end of the file.",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "command",
+          "path"
+        ],
+        "title": "StrReplaceEditorRequest",
+        "description": "String replace editor request based on openhands_aci"
+      },
+      "TextContent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "text",
+            "title": "Type"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Annotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type",
+          "text"
+        ],
+        "title": "TextContent",
+        "description": "Text content for a message."
+      },
+      "TextResourceContents": {
+        "properties": {
+          "uri": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Uri"
+          },
+          "mimeType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mimetype"
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "uri",
+          "text"
+        ],
+        "title": "TextResourceContents",
+        "description": "Text contents of a resource."
+      },
+      "Tool": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "inputSchema": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Inputschema"
+          },
+          "outputSchema": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outputschema"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ToolAnnotations"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "_meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "name",
+          "inputSchema"
+        ],
+        "title": "Tool",
+        "description": "Definition for a tool the client can call."
+      },
+      "ToolAnnotations": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "readOnlyHint": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Readonlyhint"
+          },
+          "destructiveHint": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destructivehint"
+          },
+          "idempotentHint": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idempotenthint"
+          },
+          "openWorldHint": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openworldhint"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "ToolAnnotations",
+        "description": "Additional properties describing a Tool to clients.\n\nNOTE: all properties in ToolAnnotations are **hints**.\nThey are not guaranteed to provide a faithful description of\ntool behavior (including descriptive properties like `title`).\n\nClients should never make tool use decisions based on ToolAnnotations\nreceived from untrusted servers."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ClickAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "CLICK",
+            "title": "Action Type",
+            "default": "CLICK"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X"
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Y"
+          },
+          "button": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "middle"
+            ],
+            "title": "Button",
+            "default": "left"
+          },
+          "num_clicks": {
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "title": "Num Clicks",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "title": "ClickAction"
+      },
+      "DoubleClickAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "DOUBLE_CLICK",
+            "title": "Action Type",
+            "default": "DOUBLE_CLICK"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X"
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Y"
+          }
+        },
+        "type": "object",
+        "title": "DoubleClickAction"
+      },
+      "DragToAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "DRAG_TO",
+            "title": "Action Type",
+            "default": "DRAG_TO"
+          },
+          "x": {
+            "type": "number",
+            "title": "X",
+            "description": "Target x-coordinate for drag"
+          },
+          "y": {
+            "type": "number",
+            "title": "Y",
+            "description": "Target y-coordinate for drag"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "DragToAction"
+      },
+      "HotkeyAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "HOTKEY",
+            "title": "Action Type",
+            "default": "HOTKEY"
+          },
+          "keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Keys"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keys"
+        ],
+        "title": "HotkeyAction"
+      },
+      "KeyDownAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "KEY_DOWN",
+            "title": "Action Type",
+            "default": "KEY_DOWN"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "KeyDownAction"
+      },
+      "KeyUpAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "KEY_UP",
+            "title": "Action Type",
+            "default": "KEY_UP"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "KeyUpAction"
+      },
+      "MouseDownAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "MOUSE_DOWN",
+            "title": "Action Type",
+            "default": "MOUSE_DOWN"
+          },
+          "button": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "middle"
+            ],
+            "title": "Button",
+            "default": "left"
+          }
+        },
+        "type": "object",
+        "title": "MouseDownAction"
+      },
+      "MouseUpAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "MOUSE_UP",
+            "title": "Action Type",
+            "default": "MOUSE_UP"
+          },
+          "button": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "middle"
+            ],
+            "title": "Button",
+            "default": "left"
+          }
+        },
+        "type": "object",
+        "title": "MouseUpAction"
+      },
+      "MoveToAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "MOVE_TO",
+            "title": "Action Type",
+            "default": "MOVE_TO"
+          },
+          "x": {
+            "type": "number",
+            "title": "X",
+            "description": "Target x-coordinate"
+          },
+          "y": {
+            "type": "number",
+            "title": "Y",
+            "description": "Target y-coordinate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "MoveToAction"
+      },
+      "PingBody": {
+        "properties": {
+          "resolution": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Resolution"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The desired screen resolution."
+          }
+        },
+        "type": "object",
+        "title": "PingBody",
+        "description": "Represents the body of a ping request to the server."
+      },
+      "PressAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "PRESS",
+            "title": "Action Type",
+            "default": "PRESS"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "PressAction"
+      },
+      "Resolution": {
+        "properties": {
+          "width": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Width",
+            "description": "Screen width in pixels."
+          },
+          "height": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Height",
+            "description": "Screen height in pixels."
+          }
+        },
+        "type": "object",
+        "required": [
+          "width",
+          "height"
+        ],
+        "title": "Resolution"
+      },
+      "RightClickAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "RIGHT_CLICK",
+            "title": "Action Type",
+            "default": "RIGHT_CLICK"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X"
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Y"
+          }
+        },
+        "type": "object",
+        "title": "RightClickAction"
+      },
+      "ScrollAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "SCROLL",
+            "title": "Action Type",
+            "default": "SCROLL"
+          },
+          "dx": {
+            "type": "integer",
+            "title": "Dx",
+            "default": 0
+          },
+          "dy": {
+            "type": "integer",
+            "title": "Dy",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "ScrollAction"
+      },
+      "TypingAction": {
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "const": "TYPING",
+            "title": "Action Type",
+            "default": "TYPING"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "TypingAction"
+      }
+    }
+  }
+}

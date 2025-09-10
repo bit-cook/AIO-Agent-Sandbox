@@ -1,0 +1,25 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "rspress build",
+    "check": "biome check --write",
+    "dev": "rspress dev",
+    "format": "prettier --write .",
+    "preview": "rspress preview",
+    "deploy": "npm run build && npm run preview"
+  },
+  "dependencies": {
+    "core-js": "^3.45.1",
+    "mobx": "^6.13.7",
+    "redoc": "^2.5.0",
+    "rspress": "^1.40.2",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^18.11.17",
+    "prettier": "^3.4.2"
+  }
+}

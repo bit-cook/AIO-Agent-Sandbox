@@ -1,0 +1,12 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^18.11.17",
+    "prettier": "^3.4.2"
+  }
+}
