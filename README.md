@@ -45,11 +45,11 @@ AIO Sandbox is an **all-in-one** agent sandbox environment that combines Browser
 
 Traditional sandboxes are **single-purpose** (browser, code, or shell), making file sharing and functional coordination extremely challenging. AIO Sandbox solves this by providing:
 
-✅ **Unified File System** - Files downloaded in browser are instantly available in Shell/File operations
-✅ **Multiple Interfaces** - VNC, VSCode, Jupyter, and Terminal in one unified environment
-✅ **Secure Execution** - Sandboxed Python and Node.js execution with safety guarantees
-✅ **Zero Configuration** - Pre-configured MCP servers and development tools ready to use
-✅ **Agent-Ready** - MCP-compatible APIs for seamless AI agent integration
+- ✅ **Unified File System** - Files downloaded in browser are instantly available in Shell/File operations
+- ✅ **Multiple Interfaces** - VNC, VSCode, Jupyter, and Terminal in one unified environment
+- ✅ **Secure Execution** - Sandboxed Python and Node.js execution with safety guarantees
+- ✅ **Zero Configuration** - Pre-configured MCP servers and development tools ready to use
+- ✅ **Agent-Ready** - MCP-compatible APIs for seamless AI agent integration
 
 ## 📦 Installation
 
@@ -88,13 +88,14 @@ from agent_sandbox import Sandbox
 
 # Initialize client
 client = Sandbox(base_url="http://localhost:8080")
+home_dir = c.sandbox.get_sandbox_context().home_dir
 
 # Execute shell commands
 result = client.shell.exec_command(command="ls -la")
 print(result.data.output)
 
 # File operations
-content = client.file.read_file(file="/home/gem/.bashrc")
+content = client.file.read_file(file=f"{home_dir}/.bashrc")
 print(content.data.content)
 
 # Browser automation
@@ -274,9 +275,6 @@ services:
       - SANDBOX_MEMORY_LIMIT=2g
       - SANDBOX_CPU_LIMIT=1000m
     restart: unless-stopped
-
-volumes:
-  sandbox_data:
 ```
 
 ### Kubernetes
