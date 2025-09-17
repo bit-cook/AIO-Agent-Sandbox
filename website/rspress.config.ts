@@ -16,10 +16,15 @@ export default defineConfig({
   route: {
     cleanUrls: true,
   },
+  markdown: {},
   plugins: [pluginLlms()],
   base: process.env.BASE_URL ?? '/',
   outDir: 'doc_build',
-  builderConfig: {},
+  builderConfig: {
+    html: {
+      template: 'public/index.html',
+    },
+  },
   locales: [
     {
       lang: 'en',
@@ -44,7 +49,7 @@ export default defineConfig({
       },
     ],
     footer: {
-      message: 'Built with ❤️ for AI Agent Development · AIO Sandbox © 2025',
+      message: 'Built with ❤️ for AI Agents · AIO Sandbox © 2025',
     },
     locales: [
       {
