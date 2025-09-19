@@ -9,6 +9,7 @@ if typing.TYPE_CHECKING:
     from .types import (
         ActionResponse,
         ActiveSessionsResult,
+        ActiveShellSessionsResult,
         Annotations,
         AnnotationsAudienceItem,
         AudioContent,
@@ -60,6 +61,7 @@ if typing.TYPE_CHECKING:
         ResourceLink,
         Response,
         ResponseActiveSessionsResult,
+        ResponseActiveShellSessionsResult,
         ResponseBrowserInfoResult,
         ResponseCallToolResult,
         ResponseFileFindResult,
@@ -76,6 +78,7 @@ if typing.TYPE_CHECKING:
         ResponseNodeJsExecuteResponse,
         ResponseNodeJsRuntimeInfo,
         ResponseShellCommandResult,
+        ResponseShellCreateSessionResponse,
         ResponseShellKillResult,
         ResponseShellViewResult,
         ResponseShellWaitResult,
@@ -86,7 +89,9 @@ if typing.TYPE_CHECKING:
         ScrollAction,
         SessionInfo,
         ShellCommandResult,
+        ShellCreateSessionResponse,
         ShellKillResult,
+        ShellSessionInfo,
         ShellViewResult,
         ShellWaitResult,
         ShellWriteResult,
@@ -136,6 +141,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Action_Scroll": ".browser",
     "Action_Typing": ".browser",
     "ActiveSessionsResult": ".types",
+    "ActiveShellSessionsResult": ".types",
     "Annotations": ".types",
     "AnnotationsAudienceItem": ".types",
     "AsyncSandbox": ".client",
@@ -189,6 +195,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResourceLink": ".types",
     "Response": ".types",
     "ResponseActiveSessionsResult": ".types",
+    "ResponseActiveShellSessionsResult": ".types",
     "ResponseBrowserInfoResult": ".types",
     "ResponseCallToolResult": ".types",
     "ResponseFileFindResult": ".types",
@@ -205,6 +212,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseNodeJsExecuteResponse": ".types",
     "ResponseNodeJsRuntimeInfo": ".types",
     "ResponseShellCommandResult": ".types",
+    "ResponseShellCreateSessionResponse": ".types",
     "ResponseShellKillResult": ".types",
     "ResponseShellViewResult": ".types",
     "ResponseShellWaitResult": ".types",
@@ -216,7 +224,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ScrollAction": ".types",
     "SessionInfo": ".types",
     "ShellCommandResult": ".types",
+    "ShellCreateSessionResponse": ".types",
     "ShellKillResult": ".types",
+    "ShellSessionInfo": ".types",
     "ShellViewResult": ".types",
     "ShellWaitResult": ".types",
     "ShellWriteResult": ".types",
@@ -234,7 +244,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "jupyter": ".",
     "mcp": ".",
     "nodejs": ".",
-    "providers": ".",
     "sandbox": ".",
     "shell": ".",
 }
@@ -246,11 +255,6 @@ def __getattr__(attr_name: str) -> typing.Any:
         raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
     try:
         module = import_module(module_name, __package__)
-        # If the module_name is ".", it means we're importing a submodule
-        # In that case, return the module itself, not an attribute from it
-        if module_name == ".":
-            return module
-        # Otherwise, try to get the attribute from the module
         result = getattr(module, attr_name)
         return result
     except ImportError as e:
@@ -281,6 +285,7 @@ __all__ = [
     "Action_Scroll",
     "Action_Typing",
     "ActiveSessionsResult",
+    "ActiveShellSessionsResult",
     "Annotations",
     "AnnotationsAudienceItem",
     "AsyncSandbox",
@@ -334,6 +339,7 @@ __all__ = [
     "ResourceLink",
     "Response",
     "ResponseActiveSessionsResult",
+    "ResponseActiveShellSessionsResult",
     "ResponseBrowserInfoResult",
     "ResponseCallToolResult",
     "ResponseFileFindResult",
@@ -350,6 +356,7 @@ __all__ = [
     "ResponseNodeJsExecuteResponse",
     "ResponseNodeJsRuntimeInfo",
     "ResponseShellCommandResult",
+    "ResponseShellCreateSessionResponse",
     "ResponseShellKillResult",
     "ResponseShellViewResult",
     "ResponseShellWaitResult",
@@ -361,7 +368,9 @@ __all__ = [
     "ScrollAction",
     "SessionInfo",
     "ShellCommandResult",
+    "ShellCreateSessionResponse",
     "ShellKillResult",
+    "ShellSessionInfo",
     "ShellViewResult",
     "ShellWaitResult",
     "ShellWriteResult",
@@ -379,7 +388,6 @@ __all__ = [
     "jupyter",
     "mcp",
     "nodejs",
-    "providers",
     "sandbox",
     "shell",
 ]
