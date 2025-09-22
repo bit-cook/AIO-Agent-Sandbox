@@ -395,7 +395,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📄 License
 
-AIO Sandbox is released under the [MIT License](LICENSE).
+AIO Sandbox is released under the [Apache License 2.0](LICENSE).
 
 ## 🙏 Acknowledgments
 
