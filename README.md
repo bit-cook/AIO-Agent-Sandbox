@@ -21,10 +21,10 @@ Get up and running in 30 seconds:
 
 ```bash
 # Start the sandbox (International)
-docker run --rm -it -p 8080:8080 ghcr.io/agent-infra/sandbox:v1
+docker run --rm -it -p 8080:8080 ghcr.io/agent-infra/sandbox:latest
 
 # For users in mainland China
-docker run --rm -it -p 8080:8080 enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:v1
+docker run --rm -it -p 8080:8080 enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:latest
 ```
 
 Once running, access the environment at:
