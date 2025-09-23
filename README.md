@@ -366,14 +366,6 @@ if response.choices[0].message.tool_calls:
     print(result['outputs'][0]['text'])
 ```
 
-## 📊 Performance & Security
-
-### Performance
-- **Startup Time**: < 5 seconds
-- **Memory Usage**: ~500MB base
-- **CPU Usage**: < 10% idle
-- **Concurrent Sessions**: 50+ per instance
-
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
