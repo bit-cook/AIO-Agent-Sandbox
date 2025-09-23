@@ -5,7 +5,6 @@ import { ProvidePlugin } from '@rspack/core';
 
 export default defineConfig({
   lang: 'en',
-  ssg: false,
   root: path.join(__dirname, 'docs'),
   title: 'AIO Sandbox',
   description:
