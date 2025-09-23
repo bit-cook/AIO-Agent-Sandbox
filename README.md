@@ -374,21 +374,6 @@ if response.choices[0].message.tool_calls:
 - **CPU Usage**: < 10% idle
 - **Concurrent Sessions**: 50+ per instance
 
-### Security Features
-- **Isolated Execution**: Sandboxed Python/Node.js environments
-- **Resource Limits**: Configurable CPU/memory constraints
-- **Network Isolation**: Optional network restrictions
-- **File System Quotas**: Prevent disk exhaustion
-
-## 🛣️ Roadmap
-
-- [ ] GPU support for ML workloads
-- [ ] Multi-language code execution (Go, Rust, Java)
-- [ ] Distributed sandbox orchestration
-- [ ] Enhanced debugging capabilities
-- [ ] Custom MCP server plugins
-- [ ] WebRTC support for real-time collaboration
-
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
