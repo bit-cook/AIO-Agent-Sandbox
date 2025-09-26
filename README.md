@@ -73,6 +73,14 @@ npm install @agent-infra/sandbox
 ```
 
 </td>
+<td>
+
+**Golang**
+```bash
+go get github.com/agent-infra/sandbox-sdk-go
+```
+
+</td>
 </tr>
 </table>
 
