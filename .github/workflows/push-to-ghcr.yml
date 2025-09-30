@@ -54,7 +54,7 @@ jobs:
         run: |
           # Always tag as v1
           docker tag enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:${{ steps.pull.outputs.source_tag }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
           # For releases, also tag with the version number
           if [[ "${{ github.event_name }}" == "release" ]]; then
@@ -67,7 +67,7 @@ jobs:
       - name: Push image to GHCR
         run: |
           # Always push v1 tag
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
           # For releases, push the version tag
           if [[ "${{ github.event_name }}" == "release" ]]; then

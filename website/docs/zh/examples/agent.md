@@ -533,7 +533,7 @@ if __name__ == "__main__":
 version: '3.8'
 services:
   aio-sandbox:
-    image: ghcr.io/agent-infra/sandbox:v1
+    image: ghcr.io/agent-infra/sandbox:latest
     ports:
       - "8080:8080"
     volumes:
@@ -580,7 +580,7 @@ spec:
     spec:
       containers:
       - name: aio-sandbox
-        image: ghcr.io/agent-infra/sandbox:v1
+        image: ghcr.io/agent-infra/sandbox:latest
         ports:
         - containerPort: 8080
         resources:

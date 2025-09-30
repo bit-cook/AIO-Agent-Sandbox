@@ -28,7 +28,7 @@ Build AI agents with AIO Sandbox:
 version: '3.8'
 services:
   aio-sandbox:
-    image: ghcr.io/agent-infra/sandbox:v1
+    image: ghcr.io/agent-infra/sandbox:latest
     ports:
       - "8080:8080"
     volumes:
@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
       - name: sandbox
-        image: ghcr.io/agent-infra/sandbox:v1
+        image: ghcr.io/agent-infra/sandbox:latest
         ports:
         - containerPort: 8080
         resources:
@@ -116,31 +116,31 @@ Execute shell commands and manage sessions:
 async def shell_example():
     # Execute a simple command
     result = await client.shell.exec(command="ls -la")
-    
+
     if result.success:
         print(f"Output: {result.data.output}")
         print(f"Exit code: {result.data.exit_code}")
-    
+
     # Execute with session management
     session_id = "my-session-1"
     await client.shell.exec(
-        command="cd /workspace && pwd", 
+        command="cd /workspace && pwd",
         session_id=session_id
     )
-    
+
     # Continue in the same session
     result = await client.shell.exec(
-        command="ls", 
+        command="ls",
         session_id=session_id
     )
-    
+
     # Asynchronous execution for long-running tasks
     await client.shell.exec(
         command="python long_script.py",
         async_mode=True,
         session_id=session_id
     )
-    
+
     # View session output
     view_result = await client.shell.view(session_id=session_id)
     print(view_result.data.output)
@@ -170,32 +170,32 @@ plt.savefig('/tmp/plot.png')
 print("Plot saved!")
         """.strip()
     )
-    
+
     # Read file content
     content = await client.file.read(file="/tmp/example.py")
     if content.success:
         print(f"File content:\n{content.data.content}")
-    
+
     # List directory contents
     files = await client.file.list(
         path="/tmp",
         recursive=True,
         include_size=True
     )
-    
+
     for file_info in files.data.files:
         print(f"{file_info.name}: {file_info.size} bytes")
-    
+
     # Search in files
     search_result = await client.file.search(
         file="/tmp/example.py",
         regex=r"import \w+"
     )
-    
+
     if search_result.success:
         for match in search_result.data.matches:
             print(f"Line {match.line}: {match.content}")
-    
+
     # Find files by pattern
     found_files = await client.file.find(
         path="/tmp",
@@ -229,7 +229,7 @@ print(df.head())
         timeout=60,
         session_id="data-analysis-session"
     )
-    
+
     if jupyter_result.success:
         print("Jupyter Output:")
         for output in jupyter_result.data.outputs:
@@ -237,7 +237,7 @@ print(df.head())
                 print(output.text)
             elif output.output_type == "execute_result":
                 print(output.data.get("text/plain", ""))
-    
+
     # Execute Node.js code
     nodejs_result = await client.nodejs.execute(
         code="""
@@ -260,7 +260,7 @@ try {
         """,
         timeout=30
     )
-    
+
     if nodejs_result.success:
         print(f"Node.js Output: {nodejs_result.data.stdout}")
 
@@ -276,14 +276,14 @@ async def mcp_example():
     # List available MCP servers
     servers = await client.mcp.list_servers()
     print("Available MCP servers:", servers.data)
-    
+
     # Get tools from a specific server
     browser_tools = await client.mcp.list_tools(server_name="browser")
-    
+
     for tool in browser_tools.data.tools:
         print(f"Tool: {tool.name}")
         print(f"Description: {tool.description}")
-    
+
     # Execute a tool
     screenshot_result = await client.mcp.execute_tool(
         server_name="browser",
@@ -294,7 +294,7 @@ async def mcp_example():
             "height": 1080
         }
     )
-    
+
     if screenshot_result.success:
         # Save screenshot data
         await client.file.write(
@@ -315,17 +315,17 @@ async def robust_example():
         async with AioClient("http://localhost:8080") as client:
             # Set up error handling
             result = await client.shell.exec("potentially-failing-command")
-            
+
             if not result.success:
                 print(f"Command failed: {result.message}")
                 if hasattr(result, 'error_code'):
                     print(f"Error code: {result.error_code}")
-            
+
             # Check sandbox status
             status = await client.sandbox.get_context()
             print(f"Sandbox uptime: {status.data.uptime}")
             print(f"Available packages: {len(status.data.packages)}")
-    
+
     except Exception as e:
         print(f"Connection error: {e}")
 
