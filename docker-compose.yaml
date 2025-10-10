@@ -2,8 +2,6 @@ services:
   sandbox:
     container_name: aio-sandbox
     image: ghcr.io/agent-infra/sandbox:latest
-    volumes:
-      - /tmp/gem/vite-project:/home/gem/vite-project
     security_opt:
       - seccomp:unconfined
     extra_hosts:
@@ -13,7 +11,7 @@ services:
     ports:
       - "${HOST_PORT:-8080}:8080"
     environment:
-      PROXY_SERVER: ${PROXY_SERVER:-host.docker.internal:7890}
+      PROXY_SERVER: ${PROXY_SERVER:-}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-}
       DNS_OVER_HTTPS_TEMPLATES: ${DNS_OVER_HTTPS_TEMPLATES:-}
       WORKSPACE: ${WORKSPACE:-"/home/gem"}
