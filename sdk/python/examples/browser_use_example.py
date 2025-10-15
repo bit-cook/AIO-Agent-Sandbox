@@ -6,7 +6,6 @@ from browser_use.browser import BrowserProfile, BrowserSession
 from browser_use.llm import ChatOpenAI
 
 sandbox = Sandbox(base_url="http://localhost:8080")
-print("sandbox", sandbox.browser)
 cdp_url = sandbox.browser.get_info().data.cdp_url
 
 browser_session = BrowserSession(
