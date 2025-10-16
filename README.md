@@ -8,12 +8,21 @@
   <strong>🌐 Browser | 💻 Terminal | 📁 File | 🔧 VSCode | 📊 Jupyter | 🤖 MCP</strong>
 </p>
 
+<div align="center">
+<p>
+        🌐 <a href="https://sandbox.agent-infra.com/">Website</a>&nbsp&nbsp | 🔌 <a href="https://sandbox.agent-infra.com/api">API</a>&nbsp&nbsp 
+        | &nbsp&nbsp 📑 <a href="https://arxiv.org/pdf/2509.02544#S2.SS2">Paper</a> &nbsp&nbsp
+</p>
+</div>
+
 <p align="center">
   <a href="https://github.com/agent-infra/sandbox/releases"><img src="https://img.shields.io/github/v/release/agent-infra/sandbox" alt="Release"></a>
   <a href="https://github.com/agent-infra/sandbox/blob/main/LICENSE"><img src="https://img.shields.io/github/license/agent-infra/sandbox" alt="License"></a>
   <a href="https://pypi.org/project/agent-sandbox/"><img src="https://img.shields.io/pypi/v/agent-sandbox" alt="PyPI"></a>
   <a href="https://www.npmjs.com/package/@agent-infra/sandbox"><img src="https://img.shields.io/npm/v/@agent-infra/sandbox" alt="npm"></a>
 </p>
+
+
 
 ## 🚀 Quick Start
 
