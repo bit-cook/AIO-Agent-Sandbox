@@ -35,5 +35,8 @@ services:
       MCP_SERVER_MARKITDOWN_PORT: 8101
       MCP_SERVER_CHROME_DEVTOOLS_PORT: 8102
       BROWSER_REMOTE_DEBUGGING_PORT: 9222
+      PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
+      UV_DEFAULT_INDEX: ${UV_DEFAULT_INDEX:-https://pypi.org/simple}
+      NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org}
       # for gh cli
       GITHUB_TOKEN: ""
