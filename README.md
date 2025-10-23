@@ -22,7 +22,7 @@
   <a href="https://www.npmjs.com/package/@agent-infra/sandbox"><img src="https://img.shields.io/npm/v/@agent-infra/sandbox" alt="npm"></a>
 </p>
 
-
+![](./website/docs/public/images/aio-index.png)
 
 ## 🚀 Quick Start
 
