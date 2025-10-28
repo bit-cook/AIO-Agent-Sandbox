@@ -13,7 +13,7 @@ services:
     environment:
       PROXY_SERVER: ${PROXY_SERVER:-}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-}
-      DNS_OVER_HTTPS_TEMPLATES: ${DNS_OVER_HTTPS_TEMPLATES:-}
+      DNS_OVER_HTTPS_TEMPLATES: ${DNS_OVER_HTTPS_TEMPLATES:-"https://cloudflare-dns.com/dns-query{?dns}"}
       WORKSPACE: ${WORKSPACE:-"/home/gem"}
       HOMEPAGE: ${HOMEPAGE:-}
       BROWSER_EXTRA_ARGS: ${BROWSER_EXTRA_ARGS:-}
