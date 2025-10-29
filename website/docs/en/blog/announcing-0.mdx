@@ -19,7 +19,7 @@ Agents can autonomously perceive their environment, plan steps, and invoke tools
 
 <img src="/images/blog/announcing-0/0.png" width="600" />
 
-## Pain Points
+### Pain Points
 
 1. **🧩 Environment Fragmentation**: Multiple single-function sandboxes (like E2B for code execution, Browserbase for browsers) force Agents to transfer data across sandboxes via NAS/OSS, increasing latency and complexity. For example: a deep research Agent completing 'convert a paper into a PPT' needs to exchange dozens of intermediate files (JSON configs, chart images, preview screenshots, etc.) across multiple sandboxes, adding complexity and overhead to the entire Agent system.
 
@@ -39,7 +39,7 @@ Agents can autonomously perceive their environment, plan steps, and invoke tools
 
 
 
-# Introduction
+## Introduction
 
 One-sentence introduction: AIO Sandbox integrates **browser**, **code execution**, **terminal**, **visual takeover**, **forward and reverse proxy**, **MCP**, **authentication** and other basic functions **in a single sandbox**, allowing **environment customization** based on needs, enabling different Agents to "complete tasks more efficiently in a unified environment container".
 
@@ -58,7 +58,7 @@ One-sentence introduction: AIO Sandbox integrates **browser**, **code execution*
 
 
 
-## Features
+### Features
 
 - **📦 Out-of-the-box**: Connect directly to sandbox capabilities via `/mcp` protocol, also providing **API** / **SDK** for customizing sandbox toolsets.
 - **🚀 Second-level Startup**: Full sandbox service startup completes in seconds, reaching millisecond-level after pre-caching/cold start.
@@ -72,7 +72,7 @@ One-sentence introduction: AIO Sandbox integrates **browser**, **code execution*
   <img src="/images/blog/announcing-0/5.png" width="200" />
 </div>
 
-# Examples
+## Examples
 
 | Instruction | Replay | Screenshot |
 | :-- | :-- | :-- |
@@ -85,9 +85,9 @@ One-sentence introduction: AIO Sandbox integrates **browser**, **code execution*
 
 
 
-# Quick Start
+## Quick Start
 
-## Cloud
+### Cloud
 
 [One-Click Deploy All-in-One Sandbox Application--Function Service-Volcano Engine](https://www.volcengine.com/docs/6662/1851199)
 
@@ -95,7 +95,7 @@ One-sentence introduction: AIO Sandbox integrates **browser**, **code execution*
 
 
 
-## Local
+### Local
 
 Prerequisites: Install [Docker](https://www.docker.com/get-started/), then start locally with one command:
 
@@ -108,9 +108,9 @@ docker run --rm -it -p 8080:8080 ghcr.io/agent-infra/sandbox:latest
 
 ![](/images/blog/announcing-0/11.png)
 
-# **System Architecture**
+## **System Architecture**
 
-## Overview
+### Overview
 
 AIO Sandbox provides Agents with basic capabilities like Browser, File, Shell, Code, and offers **extensibility** to support developers in combining and **customizing dedicated sandboxes** based on Agent needs (such as `AIO Sandbox for Mobile/Medical/Legal/Finance/Scientific Research`).
 Sandbox customization levels increase progressively:
@@ -122,12 +122,12 @@ Sandbox customization levels increase progressively:
 
 ![Sandbox Extensible Architecture](/images/blog/announcing-0/12.png)
 
-## Core Components
+### Core Components
 
 ![AIO Sandbox Component Diagram](/images/blog/announcing-0/13.png)
 
 
-### Browser
+#### Browser
 
 Browser environment for Agents, core is providing **CDP** and VNC, mainstream Browser Use frameworks can be used directly;
 AIO provides x11-based browser GUI visual operation interface, which can be combined with CDP for more efficient, lower risk-control Browser Use solutions.
@@ -136,7 +136,7 @@ AIO provides x11-based browser GUI visual operation interface, which can be comb
 
 
 
-#### CDP
+##### CDP
 
 CDP (Chrome Devtools Protocol) is a protocol for communicating with Chrome or Chromium browsers, providing browser control APIs via WebSocket for navigation and loading, DOM manipulation, JS execution/debugging, network interception and simulation, screenshots and rendering, security and permissions, etc.
 For a more intuitive understanding, here's an example of using CDP to initiate a page navigation command:
@@ -171,7 +171,7 @@ After establishing a WebSocket connection with CDP, you can execute browser comm
 
 
 
-#### GUI Visual Operations
+##### GUI Visual Operations
 
 **Screenshots**
 Unlike CDP-based screenshots, visual screenshots `/v1/browser/screenshot` include Tabs (the entire browser window), and operations target the entire browser window.
@@ -207,7 +207,7 @@ Abstract GUI operations into composable minimal atomic actions, such as moving m
 
 
 
-#### Takeover
+##### Takeover
 
 When Browser Use encounters login requirements, human takeover is generally needed, requiring an interactive browser interface. Currently there are two approaches:
 
@@ -241,14 +241,14 @@ The differences between the two takeover methods are roughly as follows:
 
 
 
-### Command Line Interpreter
+#### Command Line Interpreter
 
 For Coding Agents, most tasks can be completed through command line execution. When designing the Shell module, using OpenHands' [CmdRunAction](https://github.com/All-Hands-AI/OpenHands/blob/2bbe15a329e35f5156cdafcbe63c3fd54978ff98/openhands/runtime/utils/bash.py#L494-L681) as the execution engine, combined with tmux, implements multi-session execution capability.
 
 ![](/images/blog/announcing-0/20.jpeg)
 
 
-### File Operations
+#### File Operations
 
 File/code editing only requires two tools:
 
@@ -264,7 +264,7 @@ File/code editing only requires two tools:
 
 
 
-### Code Execution
+#### Code Execution
 
 Balancing language coverage and image size, using **Python** **3.10/3.11/3.12** and **Node.js** **22** runtimes from [Sandbox Fusion](https://bytedance.github.io/SandboxFusion/), providing an integrated secure isolation environment for code execution.
 
@@ -272,7 +272,7 @@ Balancing language coverage and image size, using **Python** **3.10/3.11/3.12** 
 
 
 
-## MCP Servers Aggregator
+### MCP Servers Aggregator
 
 Aggregates multiple MCP Servers (e.g., [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)) through unified entry point `/mcp`, supporting **parameter-level filtering**, and allowing **tool name prefixing** (namespacing).
 
@@ -283,7 +283,7 @@ Filter MCP Servers by `search`, future expansion will include tags (`tags`) and 
 ![](/images/blog/announcing-0/24.png)
 
 
-## Proxy
+### Proxy
 
 In Agent sandboxes, there are generally two types of scenarios corresponding to forward and reverse proxies:
 
@@ -294,7 +294,7 @@ In Agent sandboxes, there are generally two types of scenarios corresponding to 
 
 
 
-### Forward Proxy
+#### Forward Proxy
 
 Using TinyProxy proxy server to bypass geographic restrictions, access restricted content, or provide secure access within corporate intranets.
 
@@ -306,7 +306,7 @@ The [Chromium official documentation](https://chromium.googlesource.com/chromium
 ![Proxy with username and password triggers dialog](/images/blog/announcing-0/26.png)
 
 
-### Reverse Proxy
+#### Reverse Proxy
 
 ![AIO Sandbox Reverse Proxy Principle](/images/blog/announcing-0/27.png)
 Provides two methods to access service ports inside the Sandbox:
@@ -320,7 +320,7 @@ Provides two methods to access service ports inside the Sandbox:
 
 
 
-## Authentication
+### Authentication
 
 Agent operations in the sandbox generate user data. To implement unified AIO Sandbox authentication without intrusion, without modifying any existing business routing configuration, and without increasing the mental burden of future routing configuration expansion, an **"asymmetric encryption + JWT"** reverse proxy architecture was designed at the internal Nginx gateway layer:
 
@@ -328,7 +328,7 @@ Agent operations in the sandbox generate user data. To implement unified AIO San
 
 
 
-### How to Enable (One-time Configuration)
+#### How to Enable (One-time Configuration)
 
 - Generate key pair
 
@@ -349,7 +349,7 @@ JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}"
 
 
 
-### Issue JWT
+#### Issue JWT
 
 Business service uses private key to generate a JWT valid for 1 hour. Below is a simplified script to generate JWT, in practice business backend should use mature JWT libraries:
 
@@ -367,7 +367,7 @@ echo "JWT generated: ${jwt}"
 
 
 
-### Usage
+#### Usage
 
 1. Header Authentication
 
@@ -404,9 +404,9 @@ echo "JWT generated: ${jwt}"
 	```
 
 
-# Extension and Ecosystem
+## Extension and Ecosystem
 
-## Custom Images
+### Custom Images
 
 In AIO, service processes (supervisord) and service routing (Nginx) are automatically mounted following convention-based directories:
 
@@ -457,7 +457,7 @@ COPY ./nginx.agent_server.conf /opt/gem/nginx/nginx.agent_server.conf
 ```
 
 
-## SDK Integration
+### SDK Integration
 
 Using [fern](https://buildwithfern.com/learn/sdks/overview/introduction) to convert AIO Sandbox API documentation directly into Python / Go / Node.js SDKs. Using Python as an example, a few lines of code connect AIO Sandbox's core functionality:
 
@@ -487,7 +487,7 @@ print(file_res.data.content)
 
 
 
-### browser-use
+#### browser-use
 
 Just add 4 lines of code to integrate the community's [browser-use](https://github.com/browser-use/browser-use):
 
@@ -497,7 +497,7 @@ Just add 4 lines of code to integrate the community's [browser-use](https://gith
 
 
 
-### LangGraph-DeepAgents
+#### LangGraph-DeepAgents
 
 ![](/images/blog/announcing-0/31.jpeg)
 
@@ -505,7 +505,7 @@ Just add 4 lines of code to integrate the community's [browser-use](https://gith
 
 
 
-## Custom Toolsets
+### Custom Toolsets
 
 You can use API / SDK to compose high-level toolsets needed by Agents, for example `link_reader` returns page content for a URL:
 
@@ -551,7 +551,7 @@ async def link_reader(url: str, timeout_ms: int = 30_000) -> dict:
 
 
 
-## Deployment
+### Deployment
 
 Currently the best public cloud deployment form is function computing, based on Sandbox's designated instance access capability: [One-Click Deploy All-in-One Sandbox Application--Function Service-Volcano Engine](https://www.volcengine.com/docs/6662/1851199)
 
@@ -559,7 +559,7 @@ Currently the best public cloud deployment form is function computing, based on 
 
 
 
-# Summary and Outlook
+## Summary and Outlook
 
 AIO Sandbox provides an **integrated**, **customizable** base environment (Agent Env), enabling Agents to complete diverse tasks including browsing, executing code, running commands, and file operations within the same environment, while supporting customization of domain-specific sandboxes for different Agents. This sandbox system will continue to evolve and expand alongside the rising intelligence ceiling of Agents and the creativity of developers.
 
@@ -568,9 +568,9 @@ Going forward, we will continue to refine **stability**, **observability**, and 
 ![](/images/blog/announcing-0/33.png)
 
 
-# Appendix
+## Appendix
 
-## Terminology
+### Terminology
 
 | Term | Explanation |
 | :-- | :-- |
@@ -586,7 +586,7 @@ Going forward, we will continue to refine **stability**, **observability**, and 
 
 
 
-## References
+### References
 
 - [UI-TARS-2 Technical Report: Advancing GUI Agent with Multi-Turn Reinforcement Learning](https://arxiv.org/pdf/2509.02544)
 - [AIO Sandbox: All-in-One Sandbox for AI Agents & Developers](https://medium.com/coding-nexus/aio-sandbox-all-in-one-sandbox-for-ai-agents-developers-b0a5ca4cf2a8)
