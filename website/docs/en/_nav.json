@@ -7,12 +7,12 @@
   {
     "text": "API",
     "link": "/api",
-    "activeMatch": "/api"
+    "activeMatch": "/api/"
   },
   {
     "text": "Blog",
     "link": "/blog/index",
-    "activeMatch": "/blog"
+    "activeMatch": "/blog/"
   },
   {
     "text": "Version",
