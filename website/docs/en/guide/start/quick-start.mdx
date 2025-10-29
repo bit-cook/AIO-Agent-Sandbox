@@ -217,7 +217,7 @@ curl -X 'POST' \
 ```python
 from playwright.sync_api import sync_playwright
 
-browser_info = client.browser.get_browser_info()
+browser_info = client.browser.get_info()
 cdp_url = browser_info.data.cdp_url
 playwright = sync_playwright().start()
 browser = playwright.chromium.connect_over_cdp(cdp_url)
@@ -254,11 +254,11 @@ from agent_sandbox import Sandbox
 async def site_to_markdown():
     # initialize sandbox client
     c = Sandbox(base_url="http://localhost:8080")
-    home_dir = c.sandbox.get_sandbox_context().home_dir
+    home_dir = c.sandbox.get_context().home_dir
 
     # Browser: automation to download html
     async with async_playwright() as p:
-        browser_info = c.browser.get_browser_info().data
+        browser_info = c.browser.get_info().data
         page = await (await p.chromium.connect_over_cdp(browser_info.cdp_url)).new_page(
             viewport={
                 "width": browser_info.viewport.width,
@@ -272,7 +272,7 @@ async def site_to_markdown():
         ).decode('utf-8')
 
     # Jupyter: Run code in sandbox to convert html to markdown
-    c.jupyter.execute_jupyter_code(
+    c.jupyter.execute_code(
         code=f"""
 from markdownify import markdownify
 html = '''{html}'''
