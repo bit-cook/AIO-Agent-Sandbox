@@ -103,7 +103,7 @@ Prerequisites: Install [Docker](https://www.docker.com/get-started/), then start
 docker run --rm -it -p 8080:8080 ghcr.io/agent-infra/sandbox:latest
 
 # For faster access in China
-# docker run --rm -it -p 8080:8080 enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:latest
+# docker run --security-opt seccomp=unconfined --rm -it -p 8080:8080 enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:latest
 ```
 
 ![](/images/blog/announcing-0/11.png)
