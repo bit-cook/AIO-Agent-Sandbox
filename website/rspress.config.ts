@@ -82,14 +82,14 @@ export default defineConfig({
     {
       lang: 'en',
       label: 'English',
-      title: 'Rspress',
-      description: 'Static Site Generator',
+      title: 'AIO Sandbox',
+      description: 'All-in-One Environment for AI Agents',
     },
     {
       lang: 'zh',
       label: '简体中文',
-      title: 'Rspress',
-      description: '静态网站生成器',
+      title: 'AIO Sandbox',
+      description: '面向 AI Agents 的一体化沙盒环境',
     },
   ],
   themeConfig: {
