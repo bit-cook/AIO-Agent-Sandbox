@@ -42,3 +42,5 @@ services:
       NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org}
       # for gh cli
       GITHUB_TOKEN: ""
+      # Claude Skills
+      AIO_SKILLS_PATH: ${AIO_SKILLS_PATH:-}
