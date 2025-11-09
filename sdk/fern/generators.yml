@@ -19,6 +19,23 @@ groups:
         output:
           location: local-file-system
           path: ../python/agent_sandbox
+  js-sdk:
+    generators:
+      - name: fernapi/fern-typescript-sdk
+        version: 3.28.4
+        config:
+          namespaceExport: Sandbox
+          allowCustomFetcher: true
+          skipResponseValidation: true
+          includeApiReference: true
+          noSerdeLayer: true
+          omitUndefined: true
+          enableInlineTypes: false
+          neverThrowErrors: true
+        smart-casing: true
+        output:
+          location: local-file-system
+          path: ../js/src
   sdk-go:
     generators:
       - name: fernapi/fern-go-sdk
