@@ -13,7 +13,8 @@
         🌐 <a href="https://sandbox.agent-infra.com/">Website</a>&nbsp&nbsp
         | &nbsp&nbsp🔌 <a href="https://sandbox.agent-infra.com/api">API</a>&nbsp&nbsp
         | &nbsp&nbsp📑 <a href="https://arxiv.org/pdf/2509.02544#S2.SS2">Paper</a>&nbsp&nbsp
-        | &nbsp&nbsp🌟 <a href="https://github.com/agent-infra/sandbox/tree/main/examples">Examples</a> &nbsp&nbsp
+        | &nbsp&nbsp🌟 <a href="https://github.com/agent-infra/sandbox/tree/main/examples">Examples</a>&nbsp&nbsp
+        | &nbsp&nbsp📊 <a href="https://github.com/agent-infra/sandbox/tree/main/evaluation">Evaluation</a> &nbsp&nbsp
 </p>
 </div>
 
