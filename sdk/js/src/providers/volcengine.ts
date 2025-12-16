@@ -47,20 +47,29 @@ export class VolcengineProvider extends BaseProvider {
    * Create a new sandbox instance using Volcengine VEFAAS.
    *
    * @param functionId - The function ID for the sandbox
-   * @param timeout - The timeout for the sandbox creation in minutes (default: 30)
+   * @param timeout - The timeout for the sandbox creation in seconds (default: 60)
    * @param kwargs - Additional parameters for sandbox creation
    * @returns The ID of the created sandbox or error
    */
   async createSandbox(
     functionId: string,
-    timeout: number = 30,
+    timeout: number = 60,
     ...kwargs: any[]
   ): Promise<any> {
     try {
+      const params = kwargs[0] || {};
       const body = JSON.stringify({
-        function_id: functionId,
-        timeout,
-        ...kwargs[0],
+        FunctionId: functionId,
+        Timeout: timeout,
+        Metadata: params.metadata,
+        InstanceTosMountConfig: params.instanceTosMountConfig,
+        Envs: params.envs,
+        InstanceImageInfo: params.instanceImageInfo,
+        CpuMilli: params.cpuMilli,
+        MemoryMB: params.memoryMB,
+        MaxConcurrency: params.maxConcurrency,
+        RequestTimeout: params.requestTimeout,
+        ...kwargs[0]
       });
 
       const response = await request(
@@ -96,9 +105,9 @@ export class VolcengineProvider extends BaseProvider {
   ): Promise<any> {
     try {
       const body = JSON.stringify({
-        function_id: functionId,
-        sandbox_id: sandboxId,
-        ...kwargs[0],
+        FunctionId: functionId,
+        SandboxId: sandboxId,
+        ...kwargs[0]
       });
 
       const response = await request(
@@ -165,9 +174,9 @@ export class VolcengineProvider extends BaseProvider {
   ): Promise<any> {
     try {
       const body = JSON.stringify({
-        function_id: functionId,
-        sandbox_id: sandboxId,
-        ...kwargs[0],
+        SandboxId: sandboxId,
+        FunctionId: functionId,
+        ...kwargs[0]
       });
 
       const response = await request(
@@ -182,12 +191,53 @@ export class VolcengineProvider extends BaseProvider {
         body,
       );
 
-      const baseDomains = await this.getApigDomains(functionId);
-      const domainsStruct = this.appendInstanceQueryStruct(
-        baseDomains,
-        sandboxId,
+      if (response?.Result) {
+        const baseDomains = await this.getApigDomains(functionId);
+        const domainsStruct = this.appendInstanceQueryStruct(
+          baseDomains,
+          sandboxId,
+        );
+        response.Result.domains = domainsStruct;
+      }
+
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  /**
+   * Set the timeout for an existing sandbox instance.
+   *
+   * @param functionId - The function ID of the sandbox
+   * @param sandboxId - The ID of the sandbox to update
+   * @param timeout - The new timeout value in seconds
+   * @param kwargs - Additional parameters
+   * @returns The response containing the updated sandbox information
+   */
+  async setSandboxTimeout(
+    functionId: string,
+    sandboxId: string,
+    timeout: number,
+  ): Promise<any> {
+    try {
+      const body = JSON.stringify({
+        FunctionId: functionId,
+        SandboxId: sandboxId,
+        Timeout: timeout,
+      });
+
+      const response = await request(
+        'POST',
+        new Date(),
+        {},
+        {},
+        this.accessKey,
+        this.secretKey,
+        null,
+        'SetSandboxTimeout',
+        body,
       );
-      response.domains = domainsStruct;
 
       return response;
     } catch (error) {
@@ -204,9 +254,16 @@ export class VolcengineProvider extends BaseProvider {
    */
   async listSandboxes(functionId: string, ...kwargs: any[]): Promise<any> {
     try {
+      const params = kwargs[0] || {};
       const body = JSON.stringify({
-        function_id: functionId,
-        ...kwargs[0],
+        FunctionId: functionId,
+        SandboxId: params.sandboxId,
+        Metadata: params.metadata,
+        PageNumber: params.pageNumber || 1,
+        PageSize: params.pageSize || 10,
+        ImageUrl: params.imageUrl,
+        Status: params.status,
+        ...kwargs[0]
       });
 
       const response = await request(
@@ -221,21 +278,28 @@ export class VolcengineProvider extends BaseProvider {
         body,
       );
 
-      // Attach domains with instanceName query to each sandbox item
-      const baseDomains = await this.getApigDomains(functionId);
-      const sandboxes = response.sandboxes || [];
-      const normalized: any[] = [];
+      if (response?.Result) {
+        const baseDomains = await this.getApigDomains(functionId);
+        const sandboxes = response.Result.Sandboxes || [];
+        const normalized: any[] = [];
 
-      for (const sb of sandboxes) {
-        const instanceId = sb.id || sb.sandbox_id;
-        const domainsStruct = instanceId
-          ? this.appendInstanceQueryStruct(baseDomains, instanceId)
-          : baseDomains;
-        sb.domains = domainsStruct;
-        normalized.push(sb);
+        for (const sb of sandboxes) {
+          const instanceId = sb.Id || sb.SandboxId;
+          const domainsStruct = instanceId
+            ? this.appendInstanceQueryStruct(baseDomains, instanceId)
+            : baseDomains;
+          sb.domains = domainsStruct;
+          normalized.push(sb);
+        }
+
+        return {
+          sandboxes: normalized,
+          total: response.Result.Total,
+          statusCount: response.Result.StatusCount,
+        };
       }
 
-      return normalized;
+      return response;
     } catch (error) {
       return error;
     }
@@ -363,218 +427,5 @@ export class VolcengineProvider extends BaseProvider {
       return this.getApigDomainsFromUpstream(upstreamId);
     }
     return [];
-  }
-
-  /**
-   * Create an application using Volcengine VEFAAS.
-   *
-   * @param name - Application name
-   * @param gatewayName - Gateway name
-   * @param kwargs - Additional parameters
-   * @returns Application ID or null
-   */
-  private async createApplicationInternal(
-    name: string,
-    gatewayName: string,
-    ...kwargs: any[]
-  ): Promise<string | null> {
-    const functionName = `${name}-function`;
-    const sid = Math.random().toString().slice(2, 9);
-
-    const body = JSON.stringify({
-      Name: name,
-      Config: {
-        region: 'cn-beijing',
-        functionName,
-        gatewayName,
-        sid,
-      },
-      TemplateId: '68ad2fb0443cb8000843cbbe',
-    });
-
-    try {
-      const response = await request(
-        'POST',
-        new Date(),
-        {},
-        {},
-        this.accessKey,
-        this.secretKey,
-        '',
-        'CreateApplication',
-        body,
-      );
-
-      if (typeof response !== 'object' || !response) {
-        console.error(
-          'CreateApplication returned non-object response:',
-          response,
-        );
-        return null;
-      }
-
-      const result = response.Result;
-      if (typeof result !== 'object' || !result) {
-        console.error('CreateApplication response missing Result:', response);
-        return null;
-      }
-
-      const applicationId = result.Id;
-      if (!applicationId) {
-        console.error(
-          'CreateApplication response missing Result.Id:',
-          response,
-        );
-        return null;
-      }
-
-      return applicationId;
-    } catch (error) {
-      console.error('CreateApplication request failed:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Release an application using Volcengine VEFAAS.
-   *
-   * @param id - Application ID
-   * @param kwargs - Additional parameters
-   * @returns Response from the API
-   */
-  private async releaseApplication(id: string, ...kwargs: any[]): Promise<any> {
-    const body = JSON.stringify({ Id: id });
-
-    const response = await request(
-      'POST',
-      new Date(),
-      {},
-      {},
-      this.accessKey,
-      this.secretKey,
-      '',
-      'ReleaseApplication',
-      body,
-    );
-
-    return response;
-  }
-
-  /**
-   * Create an application using Volcengine VEFAAS.
-   *
-   * @param name - Application name
-   * @param gatewayName - Gateway name
-   * @param kwargs - Additional parameters
-   * @returns Application ID or null
-   */
-  async createApplication(
-    name: string,
-    gatewayName: string,
-    ...kwargs: any[]
-  ): Promise<string | null> {
-    if (!name) {
-      throw new Error('name is required to create an application');
-    }
-    if (!gatewayName) {
-      throw new Error('gateway_name is required to create an application');
-    }
-
-    const applicationId = await this.createApplicationInternal(
-      name,
-      gatewayName,
-      ...kwargs,
-    );
-    if (!applicationId) {
-      return null;
-    }
-
-    try {
-      await this.releaseApplication(applicationId, ...kwargs);
-    } catch (error) {
-      console.error(
-        `ReleaseApplication request failed for id ${applicationId}:`,
-        error,
-      );
-    }
-
-    return applicationId;
-  }
-
-  /**
-   * Return readiness flag and function ID when available.
-   *
-   * @param id - Application ID
-   * @param kwargs - Additional parameters
-   * @returns Tuple of [isReady, functionId]
-   */
-  async getApplicationReadiness(
-    id: string,
-    ...kwargs: any[]
-  ): Promise<[boolean, string | null]> {
-    const body = JSON.stringify({ Id: id });
-
-    try {
-      const response = await request(
-        'POST',
-        new Date(),
-        {},
-        {},
-        this.accessKey,
-        this.secretKey,
-        '',
-        'GetApplication',
-        body,
-      );
-
-      if (typeof response !== 'object' || !response) {
-        console.error('GetApplication returned non-object response:', response);
-        return [false, null];
-      }
-
-      const result = response.Result;
-      if (typeof result !== 'object' || !result) {
-        console.error('GetApplication response missing Result:', response);
-        return [false, null];
-      }
-
-      let functionId: string | null = null;
-      const cloudResourceRaw = result.CloudResource;
-
-      if (typeof cloudResourceRaw === 'string') {
-        try {
-          const cloudResource = JSON.parse(cloudResourceRaw);
-          if (typeof cloudResource === 'object') {
-            functionId = cloudResource.function_id;
-            if (!functionId) {
-              const sandboxInfo = cloudResource.sandbox;
-              if (typeof sandboxInfo === 'object') {
-                functionId = sandboxInfo.function_id;
-              }
-            }
-          }
-        } catch (error) {
-          console.error(
-            `Failed to decode CloudResource for application ${id}:`,
-            error,
-          );
-        }
-      } else if (typeof cloudResourceRaw === 'object') {
-        functionId = cloudResourceRaw.function_id;
-      }
-
-      const status = result.Status;
-      const isReady = status === 'deploy_success';
-
-      if (!isReady) {
-        console.log(`Application ${id} not ready. Status: ${status}`);
-        return [false, functionId];
-      }
-
-      return [true, functionId];
-    } catch (error) {
-      console.error(`GetApplication request failed for id ${id}:`, error);
-      return [false, null];
-    }
   }
 }
