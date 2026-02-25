@@ -6,11 +6,16 @@ import typing
 
 import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .core.request_options import RequestOptions
-from .raw_client import AsyncRawSandbox, RawSandbox
 
 if typing.TYPE_CHECKING:
+    from .auth.client import AsyncAuthClient, AuthClient
     from .browser.client import AsyncBrowserClient, BrowserClient
+    from .browser_captcha.client import AsyncBrowserCaptchaClient, BrowserCaptchaClient
+    from .browser_cookies.client import AsyncBrowserCookiesClient, BrowserCookiesClient
+    from .browser_network.client import AsyncBrowserNetworkClient, BrowserNetworkClient
+    from .browser_page.client import AsyncBrowserPageClient, BrowserPageClient
+    from .browser_state.client import AsyncBrowserStateClient, BrowserStateClient
+    from .browser_tabs.client import AsyncBrowserTabsClient, BrowserTabsClient
     from .code.client import AsyncCodeClient, CodeClient
     from .file.client import AsyncFileClient, FileClient
     from .jupyter.client import AsyncJupyterClient, JupyterClient
@@ -74,7 +79,6 @@ class Sandbox:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self._raw_client = RawSandbox(client_wrapper=self._client_wrapper)
         self._sandbox: typing.Optional[SandboxClient] = None
         self._shell: typing.Optional[ShellClient] = None
         self._file: typing.Optional[FileClient] = None
@@ -82,48 +86,16 @@ class Sandbox:
         self._nodejs: typing.Optional[NodejsClient] = None
         self._mcp: typing.Optional[McpClient] = None
         self._browser: typing.Optional[BrowserClient] = None
+        self._browser_page: typing.Optional[BrowserPageClient] = None
+        self._browser_tabs: typing.Optional[BrowserTabsClient] = None
+        self._browser_cookies: typing.Optional[BrowserCookiesClient] = None
+        self._browser_state: typing.Optional[BrowserStateClient] = None
+        self._browser_network: typing.Optional[BrowserNetworkClient] = None
+        self._browser_captcha: typing.Optional[BrowserCaptchaClient] = None
         self._code: typing.Optional[CodeClient] = None
         self._util: typing.Optional[UtilClient] = None
         self._skills: typing.Optional[SkillsClient] = None
-
-    @property
-    def with_raw_response(self) -> RawSandbox:
-        """
-        Retrieves a raw implementation of this client that returns raw responses.
-
-        Returns
-        -------
-        RawSandbox
-        """
-        return self._raw_client
-
-    def serve_terminal_terminal_get(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.Optional[typing.Any]:
-        """
-        Serve the terminal HTML page
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.Optional[typing.Any]
-            Successful Response
-
-        Examples
-        --------
-        from agent_sandbox import Sandbox
-
-        client = Sandbox(
-            base_url="https://yourhost.com/path/to/api",
-        )
-        client.serve_terminal_terminal_get()
-        """
-        _response = self._raw_client.serve_terminal_terminal_get(request_options=request_options)
-        return _response.data
+        self._auth: typing.Optional[AuthClient] = None
 
     @property
     def sandbox(self):
@@ -182,6 +154,54 @@ class Sandbox:
         return self._browser
 
     @property
+    def browser_page(self):
+        if self._browser_page is None:
+            from .browser_page.client import BrowserPageClient  # noqa: E402
+
+            self._browser_page = BrowserPageClient(client_wrapper=self._client_wrapper)
+        return self._browser_page
+
+    @property
+    def browser_tabs(self):
+        if self._browser_tabs is None:
+            from .browser_tabs.client import BrowserTabsClient  # noqa: E402
+
+            self._browser_tabs = BrowserTabsClient(client_wrapper=self._client_wrapper)
+        return self._browser_tabs
+
+    @property
+    def browser_cookies(self):
+        if self._browser_cookies is None:
+            from .browser_cookies.client import BrowserCookiesClient  # noqa: E402
+
+            self._browser_cookies = BrowserCookiesClient(client_wrapper=self._client_wrapper)
+        return self._browser_cookies
+
+    @property
+    def browser_state(self):
+        if self._browser_state is None:
+            from .browser_state.client import BrowserStateClient  # noqa: E402
+
+            self._browser_state = BrowserStateClient(client_wrapper=self._client_wrapper)
+        return self._browser_state
+
+    @property
+    def browser_network(self):
+        if self._browser_network is None:
+            from .browser_network.client import BrowserNetworkClient  # noqa: E402
+
+            self._browser_network = BrowserNetworkClient(client_wrapper=self._client_wrapper)
+        return self._browser_network
+
+    @property
+    def browser_captcha(self):
+        if self._browser_captcha is None:
+            from .browser_captcha.client import BrowserCaptchaClient  # noqa: E402
+
+            self._browser_captcha = BrowserCaptchaClient(client_wrapper=self._client_wrapper)
+        return self._browser_captcha
+
+    @property
     def code(self):
         if self._code is None:
             from .code.client import CodeClient  # noqa: E402
@@ -204,6 +224,14 @@ class Sandbox:
 
             self._skills = SkillsClient(client_wrapper=self._client_wrapper)
         return self._skills
+
+    @property
+    def auth(self):
+        if self._auth is None:
+            from .auth.client import AuthClient  # noqa: E402
+
+            self._auth = AuthClient(client_wrapper=self._client_wrapper)
+        return self._auth
 
 
 class AsyncSandbox:
@@ -258,7 +286,6 @@ class AsyncSandbox:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self._raw_client = AsyncRawSandbox(client_wrapper=self._client_wrapper)
         self._sandbox: typing.Optional[AsyncSandboxClient] = None
         self._shell: typing.Optional[AsyncShellClient] = None
         self._file: typing.Optional[AsyncFileClient] = None
@@ -266,56 +293,16 @@ class AsyncSandbox:
         self._nodejs: typing.Optional[AsyncNodejsClient] = None
         self._mcp: typing.Optional[AsyncMcpClient] = None
         self._browser: typing.Optional[AsyncBrowserClient] = None
+        self._browser_page: typing.Optional[AsyncBrowserPageClient] = None
+        self._browser_tabs: typing.Optional[AsyncBrowserTabsClient] = None
+        self._browser_cookies: typing.Optional[AsyncBrowserCookiesClient] = None
+        self._browser_state: typing.Optional[AsyncBrowserStateClient] = None
+        self._browser_network: typing.Optional[AsyncBrowserNetworkClient] = None
+        self._browser_captcha: typing.Optional[AsyncBrowserCaptchaClient] = None
         self._code: typing.Optional[AsyncCodeClient] = None
         self._util: typing.Optional[AsyncUtilClient] = None
         self._skills: typing.Optional[AsyncSkillsClient] = None
-
-    @property
-    def with_raw_response(self) -> AsyncRawSandbox:
-        """
-        Retrieves a raw implementation of this client that returns raw responses.
-
-        Returns
-        -------
-        AsyncRawSandbox
-        """
-        return self._raw_client
-
-    async def serve_terminal_terminal_get(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.Optional[typing.Any]:
-        """
-        Serve the terminal HTML page
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.Optional[typing.Any]
-            Successful Response
-
-        Examples
-        --------
-        import asyncio
-
-        from agent_sandbox import AsyncSandbox
-
-        client = AsyncSandbox(
-            base_url="https://yourhost.com/path/to/api",
-        )
-
-
-        async def main() -> None:
-            await client.serve_terminal_terminal_get()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.serve_terminal_terminal_get(request_options=request_options)
-        return _response.data
+        self._auth: typing.Optional[AsyncAuthClient] = None
 
     @property
     def sandbox(self):
@@ -374,6 +361,54 @@ class AsyncSandbox:
         return self._browser
 
     @property
+    def browser_page(self):
+        if self._browser_page is None:
+            from .browser_page.client import AsyncBrowserPageClient  # noqa: E402
+
+            self._browser_page = AsyncBrowserPageClient(client_wrapper=self._client_wrapper)
+        return self._browser_page
+
+    @property
+    def browser_tabs(self):
+        if self._browser_tabs is None:
+            from .browser_tabs.client import AsyncBrowserTabsClient  # noqa: E402
+
+            self._browser_tabs = AsyncBrowserTabsClient(client_wrapper=self._client_wrapper)
+        return self._browser_tabs
+
+    @property
+    def browser_cookies(self):
+        if self._browser_cookies is None:
+            from .browser_cookies.client import AsyncBrowserCookiesClient  # noqa: E402
+
+            self._browser_cookies = AsyncBrowserCookiesClient(client_wrapper=self._client_wrapper)
+        return self._browser_cookies
+
+    @property
+    def browser_state(self):
+        if self._browser_state is None:
+            from .browser_state.client import AsyncBrowserStateClient  # noqa: E402
+
+            self._browser_state = AsyncBrowserStateClient(client_wrapper=self._client_wrapper)
+        return self._browser_state
+
+    @property
+    def browser_network(self):
+        if self._browser_network is None:
+            from .browser_network.client import AsyncBrowserNetworkClient  # noqa: E402
+
+            self._browser_network = AsyncBrowserNetworkClient(client_wrapper=self._client_wrapper)
+        return self._browser_network
+
+    @property
+    def browser_captcha(self):
+        if self._browser_captcha is None:
+            from .browser_captcha.client import AsyncBrowserCaptchaClient  # noqa: E402
+
+            self._browser_captcha = AsyncBrowserCaptchaClient(client_wrapper=self._client_wrapper)
+        return self._browser_captcha
+
+    @property
     def code(self):
         if self._code is None:
             from .code.client import AsyncCodeClient  # noqa: E402
@@ -396,3 +431,11 @@ class AsyncSandbox:
 
             self._skills = AsyncSkillsClient(client_wrapper=self._client_wrapper)
         return self._skills
+
+    @property
+    def auth(self):
+        if self._auth is None:
+            from .auth.client import AsyncAuthClient  # noqa: E402
+
+            self._auth = AsyncAuthClient(client_wrapper=self._client_wrapper)
+        return self._auth

@@ -103,6 +103,8 @@ export class Code {
     /**
      * Return metadata about supported code runtimes
      *
+     * Note: Version info is cached at service level (first call only runs subprocess).
+     *
      * @param {Code.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example

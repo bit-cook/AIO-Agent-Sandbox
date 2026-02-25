@@ -3,7 +3,7 @@
   "info": {
     "title": "FastAPI",
     "description": "\n- Browser\n    - CDP: [/cdp/json/version](/cdp/json/version)\n- Jupyter\n    - Notebook: [/jupyter](/jupyter)\n- MCP\n    - Streamable HTTP: [/mcp](/mcp) or [/v1/mcp](/v1/mcp)\n",
-    "version": "1.0.0.160"
+    "version": "1.0.0.143"
   },
   "paths": {
     "/v1/sandbox": {
@@ -30,7 +30,7 @@
       "get": {
         "tags": ["sandbox"],
         "summary": "Python Packages",
-        "description": "Get installed packages by language",
+        "description": "Get installed Python packages",
         "operationId": "python_packages_v1_sandbox_packages_python_get",
         "responses": {
           "200": {
@@ -50,7 +50,7 @@
       "get": {
         "tags": ["sandbox"],
         "summary": "Nodejs Packages",
-        "description": "Get installed packages by language",
+        "description": "Get installed Node.js packages",
         "operationId": "nodejs_packages_v1_sandbox_packages_nodejs_get",
         "responses": {
           "200": {
@@ -622,6 +622,82 @@
         },
         "x-fern-sdk-group-name": "file",
         "x-fern-sdk-method-name": "find_files"
+      }
+    },
+    "/v1/file/grep": {
+      "post": {
+        "tags": ["file"],
+        "summary": "Grep Files",
+        "description": "Multi-file content search (grep) with regex or fixed string support",
+        "operationId": "grep_files",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FileGrepRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_FileGrepResult_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "file",
+        "x-fern-sdk-method-name": "grep_files"
+      }
+    },
+    "/v1/file/glob": {
+      "post": {
+        "tags": ["file"],
+        "summary": "Glob Files",
+        "description": "Enhanced file glob matching with optional metadata",
+        "operationId": "glob_files",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FileGlobRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_FileGlobResult_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "file",
+        "x-fern-sdk-method-name": "glob_files"
       }
     },
     "/v1/file/upload": {
@@ -1484,6 +1560,1602 @@
         "x-fern-sdk-method-name": "set_config"
       }
     },
+    "/v1/browser/page/navigate": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Navigate",
+        "description": "Navigate the current page to a URL.",
+        "operationId": "navigate_v1_browser_page_navigate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NavigateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_dict_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "navigate"
+      }
+    },
+    "/v1/browser/page/back": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Go Back",
+        "description": "Go back in browser history.",
+        "operationId": "go_back_v1_browser_page_back_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "back"
+      }
+    },
+    "/v1/browser/page/forward": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Go Forward",
+        "description": "Go forward in browser history.",
+        "operationId": "go_forward_v1_browser_page_forward_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "forward"
+      }
+    },
+    "/v1/browser/page/reload": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Reload",
+        "description": "Reload the current page.",
+        "operationId": "reload_v1_browser_page_reload_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "reload"
+      }
+    },
+    "/v1/browser/page/click": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Click",
+        "description": "Click an element by selector, index, or coordinates.",
+        "operationId": "click_v1_browser_page_click_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ClickRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "click"
+      }
+    },
+    "/v1/browser/page/fill": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Fill",
+        "description": "Fill an input field.",
+        "operationId": "fill_v1_browser_page_fill_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FillRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "fill"
+      }
+    },
+    "/v1/browser/page/type": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Type Text",
+        "description": "Type text with optional delay between keystrokes.",
+        "operationId": "type_text_v1_browser_page_type_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TypeTextRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "type_text"
+      }
+    },
+    "/v1/browser/page/press_key": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Press Key",
+        "description": "Press a single key.",
+        "operationId": "press_key_v1_browser_page_press_key_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KeyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "press_key"
+      }
+    },
+    "/v1/browser/page/hot_key": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Hot Key",
+        "description": "Press a key combination.",
+        "operationId": "hot_key_v1_browser_page_hot_key_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HotKeyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "hot_key"
+      }
+    },
+    "/v1/browser/page/hover": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Hover",
+        "description": "Hover over an element by selector or coordinates.",
+        "operationId": "hover_v1_browser_page_hover_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HoverRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "hover"
+      }
+    },
+    "/v1/browser/page/select_option": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Select Option",
+        "description": "Select an option in a dropdown.",
+        "operationId": "select_option_v1_browser_page_select_option_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SelectOptionRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "select_option"
+      }
+    },
+    "/v1/browser/page/check": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Check",
+        "description": "Check a checkbox.",
+        "operationId": "check_v1_browser_page_check_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CheckRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "check"
+      }
+    },
+    "/v1/browser/page/uncheck": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Uncheck",
+        "description": "Uncheck a checkbox.",
+        "operationId": "uncheck_v1_browser_page_uncheck_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CheckRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "uncheck"
+      }
+    },
+    "/v1/browser/page/upload_file": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Upload File",
+        "description": "Upload files to a file input element.",
+        "operationId": "upload_file_v1_browser_page_upload_file_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UploadFileRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "upload_file"
+      }
+    },
+    "/v1/browser/page/fill_form": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Fill Form",
+        "description": "Batch fill multiple form fields.",
+        "operationId": "fill_form_v1_browser_page_fill_form_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FormFillRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "fill_form"
+      }
+    },
+    "/v1/browser/page/scroll": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Scroll",
+        "description": "Scroll the page in a direction.",
+        "operationId": "scroll_v1_browser_page_scroll_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ScrollRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "scroll"
+      }
+    },
+    "/v1/browser/page/scroll_to": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Scroll To",
+        "description": "Scroll to an absolute position.",
+        "operationId": "scroll_to_v1_browser_page_scroll_to_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ScrollToRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "scroll_to"
+      }
+    },
+    "/v1/browser/page/scroll_to_element": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Scroll To Element",
+        "description": "Scroll an element into view.",
+        "operationId": "scroll_to_element_v1_browser_page_scroll_to_element_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScrollToElementRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "scroll_to_element"
+      }
+    },
+    "/v1/browser/page/screenshot": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Page Screenshot",
+        "description": "Capture a page screenshot.",
+        "operationId": "page_screenshot_v1_browser_page_screenshot_get",
+        "parameters": [
+          {
+            "name": "full_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Full Page"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "png", "title": "Format" }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "integer" }, { "type": "null" }],
+              "title": "Quality"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page-level screenshot via Playwright",
+            "content": { "image/png": {} }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "screenshot"
+      }
+    },
+    "/v1/browser/page/record": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Page Record",
+        "description": "Record page screencast (once/start/pause/resume/stop/status).",
+        "operationId": "page_record_v1_browser_page_record_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RecordRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_dict_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "record"
+      }
+    },
+    "/v1/browser/page/html": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Html",
+        "description": "Get the page HTML content.",
+        "operationId": "get_html_v1_browser_page_html_get",
+        "parameters": [
+          {
+            "name": "outer",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean", "default": false, "title": "Outer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_str_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "get_html"
+      }
+    },
+    "/v1/browser/page/text": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Text",
+        "description": "Get all visible text from the page.",
+        "operationId": "get_text_v1_browser_page_text_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_str_" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "get_text"
+      }
+    },
+    "/v1/browser/page/markdown": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Markdown",
+        "description": "Get the page content as Markdown using Readability and Turndown.",
+        "operationId": "get_markdown_v1_browser_page_markdown_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_dict_" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "get_markdown"
+      }
+    },
+    "/v1/browser/page/elements": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Interactive Elements",
+        "description": "Get all interactive elements on the page.",
+        "operationId": "get_interactive_elements_v1_browser_page_elements_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "get_elements"
+      }
+    },
+    "/v1/browser/page/console": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Console Logs",
+        "description": "Get captured browser console log messages.",
+        "operationId": "get_console_logs_v1_browser_page_console_get",
+        "parameters": [
+          {
+            "name": "clear",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean", "default": false, "title": "Clear" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "get_console"
+      }
+    },
+    "/v1/browser/page/console/export": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Export Console Logs",
+        "description": "Export console logs to a JSON file.",
+        "operationId": "export_console_logs_v1_browser_page_console_export_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportConsoleLogsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "export_console"
+      }
+    },
+    "/v1/browser/page/evaluate": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Evaluate",
+        "description": "Execute JavaScript and return the result.",
+        "operationId": "evaluate_v1_browser_page_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/EvaluateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "evaluate"
+      }
+    },
+    "/v1/browser/page/find_text": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Find Text",
+        "description": "Find text occurrences on the page.",
+        "operationId": "find_text_v1_browser_page_find_text_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FindTextRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "find_text"
+      }
+    },
+    "/v1/browser/page/wait": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Wait",
+        "description": "Unified wait: selector, load, url, network_idle, download, function, response, request, or timeout.",
+        "operationId": "wait_v1_browser_page_wait_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WaitRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.page",
+        "x-fern-sdk-method-name": "wait"
+      }
+    },
+    "/v1/browser/tabs": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "List Tabs",
+        "description": "List all open browser tabs.",
+        "operationId": "list_tabs_v1_browser_tabs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.tabs",
+        "x-fern-sdk-method-name": "list"
+      },
+      "post": {
+        "tags": ["browser"],
+        "summary": "Create Tab",
+        "description": "Create a new browser tab.",
+        "operationId": "create_tab_v1_browser_tabs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePageRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.tabs",
+        "x-fern-sdk-method-name": "create"
+      }
+    },
+    "/v1/browser/tabs/{index}": {
+      "delete": {
+        "tags": ["browser"],
+        "summary": "Close Tab",
+        "description": "Close a browser tab by index.",
+        "operationId": "close_tab_v1_browser_tabs__index__delete",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Index" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.tabs",
+        "x-fern-sdk-method-name": "close"
+      }
+    },
+    "/v1/browser/tabs/{index}/activate": {
+      "put": {
+        "tags": ["browser"],
+        "summary": "Activate Tab",
+        "description": "Activate (bring to front) a browser tab by index.",
+        "operationId": "activate_tab_v1_browser_tabs__index__activate_put",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Index" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.tabs",
+        "x-fern-sdk-method-name": "activate"
+      }
+    },
+    "/v1/browser/cookies": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Cookies",
+        "description": "Get browser cookies, optionally filtered by URLs (comma-separated).",
+        "operationId": "get_cookies_v1_browser_cookies_get",
+        "parameters": [
+          {
+            "name": "urls",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Urls"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.cookies",
+        "x-fern-sdk-method-name": "get_cookies"
+      },
+      "post": {
+        "tags": ["browser"],
+        "summary": "Set Cookies",
+        "description": "Set browser cookies.",
+        "operationId": "set_cookies_v1_browser_cookies_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CookieSetRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.cookies",
+        "x-fern-sdk-method-name": "set_cookies"
+      },
+      "delete": {
+        "tags": ["browser"],
+        "summary": "Clear Cookies",
+        "description": "Clear all browser cookies.",
+        "operationId": "clear_cookies_v1_browser_cookies_delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.cookies",
+        "x-fern-sdk-method-name": "clear_cookies"
+      }
+    },
+    "/v1/browser/state/save": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Save State",
+        "description": "Save browser state (cookies, localStorage, etc.) to a file.",
+        "operationId": "save_state_v1_browser_state_save_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StateSaveRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.state",
+        "x-fern-sdk-method-name": "save"
+      }
+    },
+    "/v1/browser/state/load": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Load State",
+        "description": "Load browser state from a previously saved file.",
+        "operationId": "load_state_v1_browser_state_load_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StateLoadRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.state",
+        "x-fern-sdk-method-name": "load"
+      }
+    },
+    "/v1/browser/network/headers": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Set Extra Headers",
+        "description": "Set extra HTTP headers for all subsequent requests.",
+        "operationId": "set_extra_headers_v1_browser_network_headers_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HeadersRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "set_headers"
+      }
+    },
+    "/v1/browser/network/scoped_headers": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Set Scoped Headers",
+        "description": "Set HTTP headers scoped to a specific origin.",
+        "operationId": "set_scoped_headers_v1_browser_network_scoped_headers_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ScopedHeadersRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "set_scoped_headers"
+      }
+    },
+    "/v1/browser/network/route": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Add Route",
+        "description": "Add a network route to mock or abort matching requests.",
+        "operationId": "add_route_v1_browser_network_route_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NetworkRouteRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "add_route"
+      },
+      "delete": {
+        "tags": ["browser"],
+        "summary": "Remove Route",
+        "description": "Remove a previously added network route.",
+        "operationId": "remove_route_v1_browser_network_route_delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkRouteRemoveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "remove_route"
+      }
+    },
+    "/v1/browser/network/requests": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Requests",
+        "description": "Get tracked network requests.",
+        "operationId": "get_requests_v1_browser_network_requests_get",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Filter"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 100, "title": "Limit" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response_list_" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "get_requests"
+      }
+    },
+    "/v1/browser/network/export_har": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Export Har",
+        "description": "Export tracked network requests as a HAR file.",
+        "operationId": "export_har_v1_browser_network_export_har_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ExportHarRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.network",
+        "x-fern-sdk-method-name": "export_har"
+      }
+    },
+    "/v1/browser/captcha/detect": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Detect Captcha",
+        "description": "Detect CAPTCHA on the current page.",
+        "operationId": "detect_captcha_v1_browser_captcha_detect_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.captcha",
+        "x-fern-sdk-method-name": "detect"
+      }
+    },
+    "/v1/browser/captcha/wait": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Wait For Captcha",
+        "description": "Wait for CAPTCHA to be resolved.",
+        "operationId": "wait_for_captcha_v1_browser_captcha_wait_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CaptchaWaitRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_CaptchaWaitResult_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser.captcha",
+        "x-fern-sdk-method-name": "wait"
+      }
+    },
+    "/v1/browser/restart": {
+      "post": {
+        "tags": ["browser"],
+        "summary": "Restart",
+        "description": "Restart the browser session.\n\n- **soft** (default): Reconnect the Playwright session only.\n- **hard**: Restart the browser process via supervisorctl, optionally\n  updating URL blocklist/allowlist policies before restart.",
+        "operationId": "restart_v1_browser_restart_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/RestartRequest" },
+                  { "type": "null" }
+                ],
+                "title": "Req"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "browser",
+        "x-fern-sdk-method-name": "restart"
+      }
+    },
+    "/v1/browser/proxy.pac": {
+      "get": {
+        "tags": ["browser"],
+        "summary": "Get Proxy Pac",
+        "description": "Return the current PAC file for proxy split-routing (if configured).",
+        "operationId": "get_proxy_pac_v1_browser_proxy_pac_get",
+        "responses": {
+          "200": {
+            "description": "Proxy Auto-Configuration file",
+            "content": { "application/x-ns-proxy-autoconfig": {} }
+          }
+        },
+        "x-fern-sdk-group-name": "browser",
+        "x-fern-sdk-method-name": "get_proxy_pac"
+      }
+    },
     "/v1/code/execute": {
       "post": {
         "tags": ["code"],
@@ -1526,7 +3198,7 @@
       "get": {
         "tags": ["code"],
         "summary": "Code Info",
-        "description": "Return metadata about supported code runtimes",
+        "description": "Return metadata about supported code runtimes\n\nNote: Version info is cached at service level (first call only runs subprocess).",
         "operationId": "code_info_v1_code_info_get",
         "responses": {
           "200": {
@@ -1751,17 +3423,52 @@
         "x-fern-sdk-method-name": "get_content"
       }
     },
-    "/terminal": {
-      "get": {
-        "summary": "Serve Terminal",
-        "description": "Serve the terminal HTML page",
-        "operationId": "serve_terminal_terminal_get",
+    "/tickets": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Create Ticket",
+        "description": "Create and return a short-lived authentication ticket.\n\nThis is a non-idempotent action; each call creates a new, unique ticket.",
+        "operationId": "create_ticket_tickets_post",
         "responses": {
           "200": {
             "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Create Ticket Tickets Post"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-fern-sdk-group-name": "auth",
+        "x-fern-sdk-method-name": "create_ticket"
+      }
+    },
+    "/auth": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Authenticate Request",
+        "description": "Authenticate a request using ticket or JWT.\n\nThis endpoint receives authentication subrequests (e.g., from Nginx auth_request).\nIt validates the request based on either a ticket in the 'x-original-uri'\nheader or a JWT in the 'Authorization' header.",
+        "operationId": "authenticate_request_auth_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": { "type": "string" },
+                  "type": "object",
+                  "title": "Response Authenticate Request Auth Get"
+                }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "auth",
+        "x-fern-sdk-method-name": "authenticate"
       }
     }
   },
@@ -1779,19 +3486,43 @@
       },
       "ActionResponse": {
         "properties": {
-          "status": { "type": "string", "const": "success", "title": "Status" },
-          "action_performed": { "type": "string", "title": "Action Performed" },
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Message"
+          },
           "data": {
             "anyOf": [
               { "$ref": "#/components/schemas/ActionData" },
               { "type": "null" }
-            ]
+            ],
+            "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          },
+          "status": {
+            "type": "string",
+            "const": "success",
+            "title": "Status",
+            "default": "success"
+          },
+          "action_performed": {
+            "type": "string",
+            "title": "Action Performed",
+            "default": ""
           }
         },
         "type": "object",
-        "required": ["status", "action_performed"],
         "title": "ActionResponse",
-        "description": "Response model for browser actions.\n\nProvides backward compatibility:\n- Old format: resp.json()['status'], resp.json()['action_performed']\n- New format: resp.json()['data']['status'], resp.json()['data']['action_performed']"
+        "description": "Response model for browser actions.\n\nInherits from Response for unified API format, with backward compatibility:\n- Old format: resp.json()['status'], resp.json()['action_performed']\n- New format: resp.json()['success'], resp.json()['message'], resp.json()['data']"
       },
       "ActiveSessionsResult": {
         "properties": {
@@ -1993,9 +3724,21 @@
             "title": "Vnc Url",
             "description": "VNC URL"
           },
+          "cdp_ui_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Cdp Ui Url",
+            "description": "CDP UI URL (browser-ui)"
+          },
           "viewport": {
             "$ref": "#/components/schemas/BrowserViewport",
-            "description": "Viewport size"
+            "description": "Display size (from xrandr / env vars)"
+          },
+          "page_viewport": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/BrowserViewport" },
+              { "type": "null" }
+            ],
+            "description": "Actual Chrome page viewport (window.innerWidth/Height via CDP). Smaller than viewport because Chrome UI chrome takes space."
           }
         },
         "type": "object",
@@ -2019,6 +3762,32 @@
         "type": "object",
         "required": ["width", "height"],
         "title": "BrowserViewport"
+      },
+      "CaptchaWaitRequest": {
+        "properties": {
+          "timeout": { "type": "number", "title": "Timeout", "default": 60.0 },
+          "poll_interval": {
+            "type": "number",
+            "title": "Poll Interval",
+            "default": 2.0
+          }
+        },
+        "type": "object",
+        "title": "CaptchaWaitRequest"
+      },
+      "CaptchaWaitResult": {
+        "properties": {
+          "resolved": { "type": "boolean", "title": "Resolved" }
+        },
+        "type": "object",
+        "required": ["resolved"],
+        "title": "CaptchaWaitResult"
+      },
+      "CheckRequest": {
+        "properties": { "selector": { "type": "string", "title": "Selector" } },
+        "type": "object",
+        "required": ["selector"],
+        "title": "CheckRequest"
       },
       "ClickAction": {
         "properties": {
@@ -2051,6 +3820,34 @@
         },
         "type": "object",
         "title": "ClickAction"
+      },
+      "ClickRequest": {
+        "properties": {
+          "selector": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Selector"
+          },
+          "index": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Index"
+          },
+          "x": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "X"
+          },
+          "y": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Y"
+          },
+          "button": { "type": "string", "title": "Button", "default": "left" },
+          "click_count": {
+            "type": "integer",
+            "title": "Click Count",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "title": "ClickRequest"
       },
       "CodeExecuteRequest": {
         "properties": {
@@ -2232,6 +4029,28 @@
         "title": "ConsoleRecord",
         "description": "Shell command console record model"
       },
+      "CookieSetRequest": {
+        "properties": {
+          "cookies": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Cookies"
+          }
+        },
+        "type": "object",
+        "required": ["cookies"],
+        "title": "CookieSetRequest"
+      },
+      "CreatePageRequest": {
+        "properties": {
+          "url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "title": "CreatePageRequest"
+      },
       "DependencyCommandResult": {
         "properties": {
           "command": {
@@ -2356,6 +4175,31 @@
         "title": "EmbeddedResource",
         "description": "The contents of a resource, embedded into a prompt or tool call result.\n\nIt is up to the client how best to render embedded resources for the benefit\nof the LLM and/or the user."
       },
+      "EvaluateRequest": {
+        "properties": {
+          "expression": { "type": "string", "title": "Expression" }
+        },
+        "type": "object",
+        "required": ["expression"],
+        "title": "EvaluateRequest"
+      },
+      "ExportConsoleLogsRequest": {
+        "properties": {
+          "save_path": { "type": "string", "title": "Save Path" },
+          "clear": { "type": "boolean", "title": "Clear", "default": false }
+        },
+        "type": "object",
+        "required": ["save_path"],
+        "title": "ExportConsoleLogsRequest"
+      },
+      "ExportHarRequest": {
+        "properties": {
+          "save_path": { "type": "string", "title": "Save Path" }
+        },
+        "type": "object",
+        "required": ["save_path"],
+        "title": "ExportHarRequest"
+      },
       "FileContentEncoding": {
         "type": "string",
         "enum": ["utf-8", "base64", "raw"],
@@ -2399,6 +4243,240 @@
         "required": ["path"],
         "title": "FileFindResult",
         "description": "File find result"
+      },
+      "FileGlobRequest": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Base directory path"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Glob pattern (**, *, ?, [...])"
+          },
+          "exclude": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Exclude",
+            "description": "Glob patterns to exclude"
+          },
+          "include_hidden": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Include Hidden",
+            "description": "Whether to include hidden files",
+            "default": false
+          },
+          "files_only": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Files Only",
+            "description": "Only return files (not directories)",
+            "default": true
+          },
+          "include_metadata": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Include Metadata",
+            "description": "Whether to include size and modified time",
+            "default": true
+          },
+          "max_results": {
+            "anyOf": [
+              { "type": "integer", "maximum": 50000.0, "minimum": 1.0 },
+              { "type": "null" }
+            ],
+            "title": "Max Results",
+            "description": "Maximum number of results",
+            "default": 5000
+          },
+          "sort_by": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Sort By",
+            "description": "Sort by: path, name, size, modified",
+            "default": "path"
+          },
+          "sort_desc": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Sort Desc",
+            "description": "Sort in descending order",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": ["path", "pattern"],
+        "title": "FileGlobRequest",
+        "description": "Enhanced file glob request"
+      },
+      "FileGlobResult": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Base directory path"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Glob pattern used"
+          },
+          "files": {
+            "items": { "$ref": "#/components/schemas/GlobFileInfo" },
+            "type": "array",
+            "title": "Files",
+            "description": "List of matched files",
+            "default": []
+          },
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count",
+            "description": "Total number of matches",
+            "default": 0
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated",
+            "description": "Whether results were truncated",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": ["path", "pattern"],
+        "title": "FileGlobResult",
+        "description": "Enhanced glob result"
+      },
+      "FileGrepRequest": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Directory path to search"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Search pattern (regex or fixed string)"
+          },
+          "include": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Include",
+            "description": "File glob filters to include (e.g., [\"*.py\", \"*.ts\"])"
+          },
+          "exclude": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Exclude",
+            "description": "Glob patterns to exclude (e.g., [\"node_modules\", \"*.min.js\"])"
+          },
+          "case_insensitive": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Case Insensitive",
+            "description": "Case insensitive search",
+            "default": false
+          },
+          "fixed_strings": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Fixed Strings",
+            "description": "Treat pattern as literal string, not regex",
+            "default": false
+          },
+          "context_before": {
+            "anyOf": [
+              { "type": "integer", "maximum": 20.0, "minimum": 0.0 },
+              { "type": "null" }
+            ],
+            "title": "Context Before",
+            "description": "Number of lines before each match (-B)",
+            "default": 0
+          },
+          "context_after": {
+            "anyOf": [
+              { "type": "integer", "maximum": 20.0, "minimum": 0.0 },
+              { "type": "null" }
+            ],
+            "title": "Context After",
+            "description": "Number of lines after each match (-A)",
+            "default": 0
+          },
+          "max_results": {
+            "anyOf": [
+              { "type": "integer", "maximum": 10000.0, "minimum": 1.0 },
+              { "type": "null" }
+            ],
+            "title": "Max Results",
+            "description": "Maximum number of matches to return",
+            "default": 500
+          },
+          "max_file_size": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Max File Size",
+            "description": "Skip files larger than this size (e.g., 1M, 500K)",
+            "default": "1M"
+          },
+          "recursive": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Recursive",
+            "description": "Search recursively",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": ["path", "pattern"],
+        "title": "FileGrepRequest",
+        "description": "File grep (multi-file content search) request"
+      },
+      "FileGrepResult": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Search directory path"
+          },
+          "pattern": {
+            "type": "string",
+            "title": "Pattern",
+            "description": "Search pattern used"
+          },
+          "matches": {
+            "items": { "$ref": "#/components/schemas/GrepMatch" },
+            "type": "array",
+            "title": "Matches",
+            "description": "List of matches",
+            "default": []
+          },
+          "match_count": {
+            "type": "integer",
+            "title": "Match Count",
+            "description": "Total number of matches",
+            "default": 0
+          },
+          "files_searched": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Files Searched",
+            "description": "Number of files searched"
+          },
+          "files_matched": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Files Matched",
+            "description": "Number of files with matches"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated",
+            "description": "Whether results were truncated",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": ["path", "pattern"],
+        "title": "FileGrepResult",
+        "description": "Multi-file grep result"
       },
       "FileInfo": {
         "properties": {
@@ -2780,6 +4858,113 @@
         "title": "FileWriteResult",
         "description": "File write result"
       },
+      "FillRequest": {
+        "properties": {
+          "selector": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Selector"
+          },
+          "index": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Index"
+          },
+          "text": { "type": "string", "title": "Text" }
+        },
+        "type": "object",
+        "required": ["text"],
+        "title": "FillRequest"
+      },
+      "FindTextRequest": {
+        "properties": { "keyword": { "type": "string", "title": "Keyword" } },
+        "type": "object",
+        "required": ["keyword"],
+        "title": "FindTextRequest"
+      },
+      "FormFillRequest": {
+        "properties": {
+          "items": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["items"],
+        "title": "FormFillRequest"
+      },
+      "GlobFileInfo": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "description": "Full file path"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "File name"
+          },
+          "is_directory": {
+            "type": "boolean",
+            "title": "Is Directory",
+            "description": "Whether it's a directory",
+            "default": false
+          },
+          "size": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Size",
+            "description": "File size in bytes"
+          },
+          "modified_time": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Modified Time",
+            "description": "Last modified time (ISO format)"
+          }
+        },
+        "type": "object",
+        "required": ["path", "name"],
+        "title": "GlobFileInfo",
+        "description": "Glob matched file info"
+      },
+      "GrepMatch": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "title": "File",
+            "description": "File path containing the match"
+          },
+          "line_number": {
+            "type": "integer",
+            "title": "Line Number",
+            "description": "Line number (1-based)"
+          },
+          "line_content": {
+            "type": "string",
+            "title": "Line Content",
+            "description": "Content of the matched line"
+          },
+          "context_before": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Context Before",
+            "description": "Lines before the match"
+          },
+          "context_after": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Context After",
+            "description": "Lines after the match"
+          }
+        },
+        "type": "object",
+        "required": ["file", "line_number", "line_content"],
+        "title": "GrepMatch",
+        "description": "Single grep match"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2790,6 +4975,30 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HeadersRequest": {
+        "properties": {
+          "headers": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "title": "Headers"
+          }
+        },
+        "type": "object",
+        "required": ["headers"],
+        "title": "HeadersRequest"
+      },
+      "HotKeyRequest": {
+        "properties": {
+          "keys": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Keys"
+          }
+        },
+        "type": "object",
+        "required": ["keys"],
+        "title": "HotKeyRequest"
       },
       "HotkeyAction": {
         "properties": {
@@ -2809,6 +5018,24 @@
         "type": "object",
         "required": ["keys"],
         "title": "HotkeyAction"
+      },
+      "HoverRequest": {
+        "properties": {
+          "selector": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Selector"
+          },
+          "x": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "X"
+          },
+          "y": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Y"
+          }
+        },
+        "type": "object",
+        "title": "HoverRequest"
       },
       "Icon": {
         "properties": {
@@ -3114,6 +5341,12 @@
         "required": ["key"],
         "title": "KeyDownAction"
       },
+      "KeyRequest": {
+        "properties": { "key": { "type": "string", "title": "Key" } },
+        "type": "object",
+        "required": ["key"],
+        "title": "KeyRequest"
+      },
       "KeyUpAction": {
         "properties": {
           "action_type": {
@@ -3215,6 +5448,44 @@
         "type": "object",
         "required": ["x", "y"],
         "title": "MoveToAction"
+      },
+      "NavigateRequest": {
+        "properties": {
+          "url": { "type": "string", "title": "Url" },
+          "wait_until": {
+            "type": "string",
+            "enum": ["load", "domcontentloaded", "networkidle", "commit"],
+            "title": "Wait Until",
+            "default": "load"
+          },
+          "timeout": { "type": "number", "title": "Timeout", "default": 30.0 }
+        },
+        "type": "object",
+        "required": ["url"],
+        "title": "NavigateRequest"
+      },
+      "NetworkRouteRemoveRequest": {
+        "properties": {
+          "url_pattern": { "type": "string", "title": "Url Pattern" }
+        },
+        "type": "object",
+        "required": ["url_pattern"],
+        "title": "NetworkRouteRemoveRequest"
+      },
+      "NetworkRouteRequest": {
+        "properties": {
+          "url_pattern": { "type": "string", "title": "Url Pattern" },
+          "response": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/RouteResponseModel" },
+              { "type": "null" }
+            ]
+          },
+          "abort": { "type": "boolean", "title": "Abort", "default": false }
+        },
+        "type": "object",
+        "required": ["url_pattern"],
+        "title": "NetworkRouteRequest"
       },
       "NodeJSCreateSessionRequest": {
         "properties": {
@@ -3330,6 +5601,11 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Cwd",
             "description": "Working directory for code execution"
+          },
+          "version": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Version",
+            "description": "Node.js version to use: \"node20\", \"node22\", \"node24\", or aliases \"20\", \"22\", \"24\""
           }
         },
         "type": "object",
@@ -3518,6 +5794,18 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Error",
             "description": "Error message if runtime info retrieval failed"
+          },
+          "available_versions": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Available Versions",
+            "description": "Available Node.js versions (e.g., node20, node22, node24)",
+            "default": []
+          },
+          "current_version": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Current Version",
+            "description": "Currently active Node.js version"
           }
         },
         "type": "object",
@@ -3655,6 +5943,41 @@
         "required": ["key"],
         "title": "PressAction"
       },
+      "RecordRequest": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": ["once", "start", "pause", "resume", "stop", "status"],
+            "title": "Record Action",
+            "default": "once"
+          },
+          "save_path": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Save Path"
+          },
+          "duration": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Duration",
+            "default": 10.0
+          },
+          "fps": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Fps",
+            "default": 15
+          },
+          "quality": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Quality",
+            "default": 80
+          }
+        },
+        "type": "object",
+        "title": "RecordRequest"
+      },
       "Resolution": {
         "properties": {
           "width": {
@@ -3752,6 +6075,11 @@
             "anyOf": [{}, { "type": "null" }],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3778,6 +6106,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3803,6 +6136,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3828,6 +6166,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3894,10 +6237,45 @@
             ],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
         "title": "Response[CallToolResultModel]"
+      },
+      "Response_CaptchaWaitResult_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/CaptchaWaitResult" },
+              { "type": "null" }
+            ],
+            "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          }
+        },
+        "type": "object",
+        "title": "Response[CaptchaWaitResult]"
       },
       "Response_CodeExecuteResponse_": {
         "properties": {
@@ -3919,6 +6297,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3944,6 +6327,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -3969,10 +6357,75 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
         "title": "Response[FileFindResult]"
+      },
+      "Response_FileGlobResult_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/FileGlobResult" },
+              { "type": "null" }
+            ],
+            "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          }
+        },
+        "type": "object",
+        "title": "Response[FileGlobResult]"
+      },
+      "Response_FileGrepResult_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/FileGrepResult" },
+              { "type": "null" }
+            ],
+            "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          }
+        },
+        "type": "object",
+        "title": "Response[FileGrepResult]"
       },
       "Response_FileListResult_": {
         "properties": {
@@ -3994,6 +6447,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4019,6 +6477,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4044,6 +6507,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4069,6 +6537,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4094,6 +6567,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4119,6 +6597,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4144,6 +6627,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4169,6 +6657,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4194,6 +6687,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4244,6 +6742,11 @@
             ],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4270,6 +6773,11 @@
             ],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4295,6 +6803,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4320,6 +6833,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4345,6 +6863,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4370,6 +6893,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4395,6 +6923,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4420,6 +6953,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4445,6 +6983,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4470,6 +7013,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4495,6 +7043,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4520,6 +7073,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4545,6 +7103,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4570,6 +7133,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4595,6 +7163,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4620,6 +7193,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4645,6 +7223,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4670,6 +7253,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4695,6 +7283,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4720,6 +7313,11 @@
               { "type": "null" }
             ],
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
@@ -4746,10 +7344,43 @@
             ],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
         "title": "Response[dict]"
+      },
+      "Response_list_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "description": "Whether the operation was successful",
+            "default": true
+          },
+          "message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Message",
+            "description": "Operation result message",
+            "default": "Operation successful"
+          },
+          "data": {
+            "anyOf": [{ "items": {}, "type": "array" }, { "type": "null" }],
+            "title": "Data",
+            "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          }
+        },
+        "type": "object",
+        "title": "Response[list]"
       },
       "Response_str_": {
         "properties": {
@@ -4769,10 +7400,45 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Data",
             "description": "Data returned from the operation"
+          },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
           }
         },
         "type": "object",
         "title": "Response[str]"
+      },
+      "RestartRequest": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": ["soft", "hard"],
+            "title": "Mode",
+            "default": "hard"
+          },
+          "url_blocklist": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Url Blocklist"
+          },
+          "url_allowlist": {
+            "anyOf": [
+              { "items": { "type": "string" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Url Allowlist"
+          },
+          "locale": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Locale"
+          }
+        },
+        "type": "object",
+        "title": "RestartRequest"
       },
       "RightClickAction": {
         "properties": {
@@ -4793,6 +7459,24 @@
         },
         "type": "object",
         "title": "RightClickAction"
+      },
+      "RouteResponseModel": {
+        "properties": {
+          "status": { "type": "integer", "title": "Status", "default": 200 },
+          "headers": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "title": "Headers"
+          },
+          "body": { "type": "string", "title": "Body", "default": "" },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "default": "text/plain"
+          }
+        },
+        "type": "object",
+        "title": "RouteResponseModel"
       },
       "RuntimeEnv": {
         "properties": {
@@ -4846,6 +7530,11 @@
             "title": "Data",
             "description": "Data returned from the operation"
           },
+          "hint": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hint",
+            "description": "Context hint for AI agents (e.g. tab changes)"
+          },
           "home_dir": { "type": "string", "title": "Home Dir" },
           "version": { "type": "string", "title": "Version" },
           "detail": { "$ref": "#/components/schemas/SandboxDetail" }
@@ -4853,6 +7542,19 @@
         "type": "object",
         "required": ["home_dir", "version", "detail"],
         "title": "SandboxResponse"
+      },
+      "ScopedHeadersRequest": {
+        "properties": {
+          "origin": { "type": "string", "title": "Origin" },
+          "headers": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "title": "Headers"
+          }
+        },
+        "type": "object",
+        "required": ["origin", "headers"],
+        "title": "ScopedHeadersRequest"
       },
       "ScrollAction": {
         "properties": {
@@ -4867,6 +7569,52 @@
         },
         "type": "object",
         "title": "ScrollAction"
+      },
+      "ScrollRequest": {
+        "properties": {
+          "direction": {
+            "type": "string",
+            "title": "Direction",
+            "default": "down"
+          },
+          "amount": { "type": "integer", "title": "Amount", "default": 300 }
+        },
+        "type": "object",
+        "title": "ScrollRequest"
+      },
+      "ScrollToElementRequest": {
+        "properties": { "selector": { "type": "string", "title": "Selector" } },
+        "type": "object",
+        "required": ["selector"],
+        "title": "ScrollToElementRequest"
+      },
+      "ScrollToRequest": {
+        "properties": {
+          "x": { "type": "integer", "title": "X", "default": 0 },
+          "y": { "type": "integer", "title": "Y", "default": 0 }
+        },
+        "type": "object",
+        "title": "ScrollToRequest"
+      },
+      "SelectOptionRequest": {
+        "properties": {
+          "selector": { "type": "string", "title": "Selector" },
+          "value": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Value"
+          },
+          "label": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Label"
+          },
+          "index": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Index"
+          }
+        },
+        "type": "object",
+        "required": ["selector"],
+        "title": "SelectOptionRequest"
       },
       "SessionInfo": {
         "properties": {
@@ -5018,11 +7766,22 @@
             "title": "No Change Timeout",
             "description": "Timeout (seconds) for detecting no new output from a command. If no output change is detected within this time, command returns with NO_CHANGE_TIMEOUT status. Overrides session-level setting for this command only."
           },
+          "hard_timeout": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Hard Timeout",
+            "description": "Hard timeout (seconds) for command execution. When reached, the command is forcefully stopped and current console output is returned with HARD_TIMEOUT status. Unlike timeout (which only affects HTTP response timing), this actually terminates the command."
+          },
           "preserve_symlinks": {
             "anyOf": [{ "type": "boolean" }, { "type": "null" }],
             "title": "Preserve Symlinks",
             "description": "If True, preserve symlinks in working directory path (pwd shows symlink path). If False, symlinks are resolved to physical paths. Defaults to False for backward compatibility.",
             "default": false
+          },
+          "truncate": {
+            "type": "boolean",
+            "title": "Truncate",
+            "description": "If True, truncate output when it exceeds 30000 characters (default: True)",
+            "default": true
           }
         },
         "type": "object",
@@ -5336,6 +8095,18 @@
         "required": ["count"],
         "title": "SkillRegistrationResult"
       },
+      "StateLoadRequest": {
+        "properties": { "path": { "type": "string", "title": "Path" } },
+        "type": "object",
+        "required": ["path"],
+        "title": "StateLoadRequest"
+      },
+      "StateSaveRequest": {
+        "properties": { "path": { "type": "string", "title": "Path" } },
+        "type": "object",
+        "required": ["path"],
+        "title": "StateSaveRequest"
+      },
       "StrReplaceEditorRequest": {
         "properties": {
           "command": {
@@ -5385,6 +8156,41 @@
             ],
             "title": "Replace Mode",
             "description": "Optional parameter of `str_replace` command. When specified, controls how multiple occurrences are handled: 'ALL' replaces all occurrences, 'FIRST' replaces only the first, 'LAST' replaces only the last. If not specified, requires unique match (original behavior)."
+          },
+          "page_range": {
+            "anyOf": [
+              { "items": { "type": "integer" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Page Range",
+            "description": "Optional parameter for `view` command on PDF files. Specifies page range [start, end] (1-indexed). E.g., [1, 5] reads pages 1-5."
+          },
+          "sheet_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Sheet Name",
+            "description": "Optional parameter for `view` command on Excel files. Specifies which sheet to read. If not provided, all sheets are returned."
+          },
+          "row_range": {
+            "anyOf": [
+              { "items": { "type": "integer" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Row Range",
+            "description": "Optional parameter for `view` command on Excel files. Specifies row range [start, end] (1-indexed). E.g., [1, 100] reads rows 1-100."
+          },
+          "slide_range": {
+            "anyOf": [
+              { "items": { "type": "integer" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Slide Range",
+            "description": "Optional parameter for `view` command on PPTX files. Specifies slide range [start, end] (1-indexed). E.g., [1, 5] reads slides 1-5."
+          },
+          "enable_metadata": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Enable Metadata",
+            "description": "Optional parameter for `view` command. If true, returns file metadata (total pages, sheets, slides, etc.) in the response.",
+            "default": false
           }
         },
         "type": "object",
@@ -5423,6 +8229,13 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "New Content",
             "description": "New file content after operation"
+          },
+          "metadata": {
+            "anyOf": [
+              { "additionalProperties": true, "type": "object" },
+              { "type": "null" }
+            ],
+            "description": "File metadata (only returned when enable_metadata=true for binary files)"
           }
         },
         "type": "object",
@@ -5651,6 +8464,15 @@
         "title": "ToolSpec",
         "description": "Tool specification"
       },
+      "TypeTextRequest": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "delay": { "type": "number", "title": "Delay", "default": 0 }
+        },
+        "type": "object",
+        "required": ["text"],
+        "title": "TypeTextRequest"
+      },
       "TypingAction": {
         "properties": {
           "action_type": {
@@ -5670,6 +8492,19 @@
         "type": "object",
         "required": ["text"],
         "title": "TypingAction"
+      },
+      "UploadFileRequest": {
+        "properties": {
+          "selector": { "type": "string", "title": "Selector" },
+          "files": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": ["selector", "files"],
+        "title": "UploadFileRequest"
       },
       "UtilConvertToMarkdownRequest": {
         "properties": {
@@ -5716,6 +8551,57 @@
         "type": "object",
         "required": ["duration"],
         "title": "WaitAction"
+      },
+      "WaitRequest": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "selector",
+              "load",
+              "url",
+              "network_idle",
+              "download",
+              "function",
+              "response",
+              "request",
+              "timeout"
+            ],
+            "title": "Type"
+          },
+          "selector": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Selector"
+          },
+          "state": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "State"
+          },
+          "url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Url"
+          },
+          "save_path": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Save Path"
+          },
+          "timeout": { "type": "number", "title": "Timeout", "default": 30.0 },
+          "expression": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Expression"
+          },
+          "polling": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Polling"
+          },
+          "url_pattern": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Url Pattern"
+          }
+        },
+        "type": "object",
+        "required": ["type"],
+        "title": "WaitRequest"
       }
     }
   }

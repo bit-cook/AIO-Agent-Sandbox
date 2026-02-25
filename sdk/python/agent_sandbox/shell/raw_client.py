@@ -39,7 +39,9 @@ class RawShellClient:
         timeout: typing.Optional[float] = OMIT,
         strict: typing.Optional[bool] = OMIT,
         no_change_timeout: typing.Optional[int] = OMIT,
+        hard_timeout: typing.Optional[float] = OMIT,
         preserve_symlinks: typing.Optional[bool] = OMIT,
+        truncate: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ResponseShellCommandResult]:
         """
@@ -69,8 +71,14 @@ class RawShellClient:
         no_change_timeout : typing.Optional[int]
             Timeout (seconds) for detecting no new output from a command. If no output change is detected within this time, command returns with NO_CHANGE_TIMEOUT status. Overrides session-level setting for this command only.
 
+        hard_timeout : typing.Optional[float]
+            Hard timeout (seconds) for command execution. When reached, the command is forcefully stopped and current console output is returned with HARD_TIMEOUT status. Unlike timeout (which only affects HTTP response timing), this actually terminates the command.
+
         preserve_symlinks : typing.Optional[bool]
             If True, preserve symlinks in working directory path (pwd shows symlink path). If False, symlinks are resolved to physical paths. Defaults to False for backward compatibility.
+
+        truncate : typing.Optional[bool]
+            If True, truncate output when it exceeds 30000 characters (default: True)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -91,7 +99,9 @@ class RawShellClient:
                 "timeout": timeout,
                 "strict": strict,
                 "no_change_timeout": no_change_timeout,
+                "hard_timeout": hard_timeout,
                 "preserve_symlinks": preserve_symlinks,
+                "truncate": truncate,
             },
             headers={
                 "content-type": "application/json",
@@ -686,7 +696,9 @@ class AsyncRawShellClient:
         timeout: typing.Optional[float] = OMIT,
         strict: typing.Optional[bool] = OMIT,
         no_change_timeout: typing.Optional[int] = OMIT,
+        hard_timeout: typing.Optional[float] = OMIT,
         preserve_symlinks: typing.Optional[bool] = OMIT,
+        truncate: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ResponseShellCommandResult]:
         """
@@ -716,8 +728,14 @@ class AsyncRawShellClient:
         no_change_timeout : typing.Optional[int]
             Timeout (seconds) for detecting no new output from a command. If no output change is detected within this time, command returns with NO_CHANGE_TIMEOUT status. Overrides session-level setting for this command only.
 
+        hard_timeout : typing.Optional[float]
+            Hard timeout (seconds) for command execution. When reached, the command is forcefully stopped and current console output is returned with HARD_TIMEOUT status. Unlike timeout (which only affects HTTP response timing), this actually terminates the command.
+
         preserve_symlinks : typing.Optional[bool]
             If True, preserve symlinks in working directory path (pwd shows symlink path). If False, symlinks are resolved to physical paths. Defaults to False for backward compatibility.
+
+        truncate : typing.Optional[bool]
+            If True, truncate output when it exceeds 30000 characters (default: True)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -738,7 +756,9 @@ class AsyncRawShellClient:
                 "timeout": timeout,
                 "strict": strict,
                 "no_change_timeout": no_change_timeout,
+                "hard_timeout": hard_timeout,
                 "preserve_symlinks": preserve_symlinks,
+                "truncate": truncate,
             },
             headers={
                 "content-type": "application/json",

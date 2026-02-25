@@ -7,6 +7,8 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.file_content_encoding import FileContentEncoding
 from ..types.response_file_find_result import ResponseFileFindResult
+from ..types.response_file_glob_result import ResponseFileGlobResult
+from ..types.response_file_grep_result import ResponseFileGrepResult
 from ..types.response_file_list_result import ResponseFileListResult
 from ..types.response_file_read_result import ResponseFileReadResult
 from ..types.response_file_replace_result import ResponseFileReplaceResult
@@ -294,6 +296,176 @@ class FileClient:
         _response = self._raw_client.find_files(path=path, glob=glob, request_options=request_options)
         return _response.data
 
+    def grep_files(
+        self,
+        *,
+        path: str,
+        pattern: str,
+        include: typing.Optional[typing.Sequence[str]] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        case_insensitive: typing.Optional[bool] = OMIT,
+        fixed_strings: typing.Optional[bool] = OMIT,
+        context_before: typing.Optional[int] = OMIT,
+        context_after: typing.Optional[int] = OMIT,
+        max_results: typing.Optional[int] = OMIT,
+        max_file_size: typing.Optional[str] = OMIT,
+        recursive: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResponseFileGrepResult:
+        """
+        Multi-file content search (grep) with regex or fixed string support
+
+        Parameters
+        ----------
+        path : str
+            Directory path to search
+
+        pattern : str
+            Search pattern (regex or fixed string)
+
+        include : typing.Optional[typing.Sequence[str]]
+            File glob filters to include (e.g., ["*.py", "*.ts"])
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Glob patterns to exclude (e.g., ["node_modules", "*.min.js"])
+
+        case_insensitive : typing.Optional[bool]
+            Case insensitive search
+
+        fixed_strings : typing.Optional[bool]
+            Treat pattern as literal string, not regex
+
+        context_before : typing.Optional[int]
+            Number of lines before each match (-B)
+
+        context_after : typing.Optional[int]
+            Number of lines after each match (-A)
+
+        max_results : typing.Optional[int]
+            Maximum number of matches to return
+
+        max_file_size : typing.Optional[str]
+            Skip files larger than this size (e.g., 1M, 500K)
+
+        recursive : typing.Optional[bool]
+            Search recursively
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResponseFileGrepResult
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.grep_files(
+            path="path",
+            pattern="pattern",
+        )
+        """
+        _response = self._raw_client.grep_files(
+            path=path,
+            pattern=pattern,
+            include=include,
+            exclude=exclude,
+            case_insensitive=case_insensitive,
+            fixed_strings=fixed_strings,
+            context_before=context_before,
+            context_after=context_after,
+            max_results=max_results,
+            max_file_size=max_file_size,
+            recursive=recursive,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def glob_files(
+        self,
+        *,
+        path: str,
+        pattern: str,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        include_hidden: typing.Optional[bool] = OMIT,
+        files_only: typing.Optional[bool] = OMIT,
+        include_metadata: typing.Optional[bool] = OMIT,
+        max_results: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[str] = OMIT,
+        sort_desc: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResponseFileGlobResult:
+        """
+        Enhanced file glob matching with optional metadata
+
+        Parameters
+        ----------
+        path : str
+            Base directory path
+
+        pattern : str
+            Glob pattern (**, *, ?, [...])
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Glob patterns to exclude
+
+        include_hidden : typing.Optional[bool]
+            Whether to include hidden files
+
+        files_only : typing.Optional[bool]
+            Only return files (not directories)
+
+        include_metadata : typing.Optional[bool]
+            Whether to include size and modified time
+
+        max_results : typing.Optional[int]
+            Maximum number of results
+
+        sort_by : typing.Optional[str]
+            Sort by: path, name, size, modified
+
+        sort_desc : typing.Optional[bool]
+            Sort in descending order
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResponseFileGlobResult
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.glob_files(
+            path="path",
+            pattern="pattern",
+        )
+        """
+        _response = self._raw_client.glob_files(
+            path=path,
+            pattern=pattern,
+            exclude=exclude,
+            include_hidden=include_hidden,
+            files_only=files_only,
+            include_metadata=include_metadata,
+            max_results=max_results,
+            sort_by=sort_by,
+            sort_desc=sort_desc,
+            request_options=request_options,
+        )
+        return _response.data
+
     def upload_file(
         self,
         *,
@@ -453,6 +625,11 @@ class FileClient:
         insert_line: typing.Optional[int] = OMIT,
         view_range: typing.Optional[typing.Sequence[int]] = OMIT,
         replace_mode: typing.Optional[StrReplaceEditorRequestReplaceMode] = OMIT,
+        page_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        sheet_name: typing.Optional[str] = OMIT,
+        row_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ResponseStrReplaceEditorResult:
         """
@@ -489,6 +666,21 @@ class FileClient:
         replace_mode : typing.Optional[StrReplaceEditorRequestReplaceMode]
             Optional parameter of `str_replace` command. When specified, controls how multiple occurrences are handled: 'ALL' replaces all occurrences, 'FIRST' replaces only the first, 'LAST' replaces only the last. If not specified, requires unique match (original behavior).
 
+        page_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on PDF files. Specifies page range [start, end] (1-indexed). E.g., [1, 5] reads pages 1-5.
+
+        sheet_name : typing.Optional[str]
+            Optional parameter for `view` command on Excel files. Specifies which sheet to read. If not provided, all sheets are returned.
+
+        row_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on Excel files. Specifies row range [start, end] (1-indexed). E.g., [1, 100] reads rows 1-100.
+
+        slide_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on PPTX files. Specifies slide range [start, end] (1-indexed). E.g., [1, 5] reads slides 1-5.
+
+        enable_metadata : typing.Optional[bool]
+            Optional parameter for `view` command. If true, returns file metadata (total pages, sheets, slides, etc.) in the response.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -518,6 +710,11 @@ class FileClient:
             insert_line=insert_line,
             view_range=view_range,
             replace_mode=replace_mode,
+            page_range=page_range,
+            sheet_name=sheet_name,
+            row_range=row_range,
+            slide_range=slide_range,
+            enable_metadata=enable_metadata,
             request_options=request_options,
         )
         return _response.data
@@ -837,6 +1034,192 @@ class AsyncFileClient:
         _response = await self._raw_client.find_files(path=path, glob=glob, request_options=request_options)
         return _response.data
 
+    async def grep_files(
+        self,
+        *,
+        path: str,
+        pattern: str,
+        include: typing.Optional[typing.Sequence[str]] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        case_insensitive: typing.Optional[bool] = OMIT,
+        fixed_strings: typing.Optional[bool] = OMIT,
+        context_before: typing.Optional[int] = OMIT,
+        context_after: typing.Optional[int] = OMIT,
+        max_results: typing.Optional[int] = OMIT,
+        max_file_size: typing.Optional[str] = OMIT,
+        recursive: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResponseFileGrepResult:
+        """
+        Multi-file content search (grep) with regex or fixed string support
+
+        Parameters
+        ----------
+        path : str
+            Directory path to search
+
+        pattern : str
+            Search pattern (regex or fixed string)
+
+        include : typing.Optional[typing.Sequence[str]]
+            File glob filters to include (e.g., ["*.py", "*.ts"])
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Glob patterns to exclude (e.g., ["node_modules", "*.min.js"])
+
+        case_insensitive : typing.Optional[bool]
+            Case insensitive search
+
+        fixed_strings : typing.Optional[bool]
+            Treat pattern as literal string, not regex
+
+        context_before : typing.Optional[int]
+            Number of lines before each match (-B)
+
+        context_after : typing.Optional[int]
+            Number of lines after each match (-A)
+
+        max_results : typing.Optional[int]
+            Maximum number of matches to return
+
+        max_file_size : typing.Optional[str]
+            Skip files larger than this size (e.g., 1M, 500K)
+
+        recursive : typing.Optional[bool]
+            Search recursively
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResponseFileGrepResult
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.grep_files(
+                path="path",
+                pattern="pattern",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.grep_files(
+            path=path,
+            pattern=pattern,
+            include=include,
+            exclude=exclude,
+            case_insensitive=case_insensitive,
+            fixed_strings=fixed_strings,
+            context_before=context_before,
+            context_after=context_after,
+            max_results=max_results,
+            max_file_size=max_file_size,
+            recursive=recursive,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def glob_files(
+        self,
+        *,
+        path: str,
+        pattern: str,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        include_hidden: typing.Optional[bool] = OMIT,
+        files_only: typing.Optional[bool] = OMIT,
+        include_metadata: typing.Optional[bool] = OMIT,
+        max_results: typing.Optional[int] = OMIT,
+        sort_by: typing.Optional[str] = OMIT,
+        sort_desc: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ResponseFileGlobResult:
+        """
+        Enhanced file glob matching with optional metadata
+
+        Parameters
+        ----------
+        path : str
+            Base directory path
+
+        pattern : str
+            Glob pattern (**, *, ?, [...])
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Glob patterns to exclude
+
+        include_hidden : typing.Optional[bool]
+            Whether to include hidden files
+
+        files_only : typing.Optional[bool]
+            Only return files (not directories)
+
+        include_metadata : typing.Optional[bool]
+            Whether to include size and modified time
+
+        max_results : typing.Optional[int]
+            Maximum number of results
+
+        sort_by : typing.Optional[str]
+            Sort by: path, name, size, modified
+
+        sort_desc : typing.Optional[bool]
+            Sort in descending order
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ResponseFileGlobResult
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.glob_files(
+                path="path",
+                pattern="pattern",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.glob_files(
+            path=path,
+            pattern=pattern,
+            exclude=exclude,
+            include_hidden=include_hidden,
+            files_only=files_only,
+            include_metadata=include_metadata,
+            max_results=max_results,
+            sort_by=sort_by,
+            sort_desc=sort_desc,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def upload_file(
         self,
         *,
@@ -1021,6 +1404,11 @@ class AsyncFileClient:
         insert_line: typing.Optional[int] = OMIT,
         view_range: typing.Optional[typing.Sequence[int]] = OMIT,
         replace_mode: typing.Optional[StrReplaceEditorRequestReplaceMode] = OMIT,
+        page_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        sheet_name: typing.Optional[str] = OMIT,
+        row_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
+        enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ResponseStrReplaceEditorResult:
         """
@@ -1056,6 +1444,21 @@ class AsyncFileClient:
 
         replace_mode : typing.Optional[StrReplaceEditorRequestReplaceMode]
             Optional parameter of `str_replace` command. When specified, controls how multiple occurrences are handled: 'ALL' replaces all occurrences, 'FIRST' replaces only the first, 'LAST' replaces only the last. If not specified, requires unique match (original behavior).
+
+        page_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on PDF files. Specifies page range [start, end] (1-indexed). E.g., [1, 5] reads pages 1-5.
+
+        sheet_name : typing.Optional[str]
+            Optional parameter for `view` command on Excel files. Specifies which sheet to read. If not provided, all sheets are returned.
+
+        row_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on Excel files. Specifies row range [start, end] (1-indexed). E.g., [1, 100] reads rows 1-100.
+
+        slide_range : typing.Optional[typing.Sequence[int]]
+            Optional parameter for `view` command on PPTX files. Specifies slide range [start, end] (1-indexed). E.g., [1, 5] reads slides 1-5.
+
+        enable_metadata : typing.Optional[bool]
+            Optional parameter for `view` command. If true, returns file metadata (total pages, sheets, slides, etc.) in the response.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1094,6 +1497,11 @@ class AsyncFileClient:
             insert_line=insert_line,
             view_range=view_range,
             replace_mode=replace_mode,
+            page_range=page_range,
+            sheet_name=sheet_name,
+            row_range=row_range,
+            slide_range=slide_range,
+            enable_metadata=enable_metadata,
             request_options=request_options,
         )
         return _response.data

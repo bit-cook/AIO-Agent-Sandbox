@@ -52,7 +52,7 @@ class RawSandboxClient:
 
     def get_python_packages(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[Response]:
         """
-        Get installed packages by language
+        Get installed Python packages
 
         Parameters
         ----------
@@ -86,7 +86,7 @@ class RawSandboxClient:
 
     def get_nodejs_packages(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[Response]:
         """
-        Get installed packages by language
+        Get installed Node.js packages
 
         Parameters
         ----------
@@ -163,7 +163,7 @@ class AsyncRawSandboxClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Response]:
         """
-        Get installed packages by language
+        Get installed Python packages
 
         Parameters
         ----------
@@ -199,7 +199,7 @@ class AsyncRawSandboxClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Response]:
         """
-        Get installed packages by language
+        Get installed Node.js packages
 
         Parameters
         ----------
