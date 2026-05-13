@@ -8,21 +8,33 @@ from .. import core
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.conflict_error import ConflictError
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.file_content_encoding import FileContentEncoding
+from ..types.file_download_change_policy import FileDownloadChangePolicy
 from ..types.http_validation_error import HttpValidationError
-from ..types.response_file_find_result import ResponseFileFindResult
-from ..types.response_file_glob_result import ResponseFileGlobResult
-from ..types.response_file_grep_result import ResponseFileGrepResult
-from ..types.response_file_list_result import ResponseFileListResult
-from ..types.response_file_read_result import ResponseFileReadResult
-from ..types.response_file_replace_result import ResponseFileReplaceResult
-from ..types.response_file_search_result import ResponseFileSearchResult
-from ..types.response_file_upload_result import ResponseFileUploadResult
-from ..types.response_file_write_result import ResponseFileWriteResult
-from ..types.response_str_replace_editor_result import ResponseStrReplaceEditorResult
+from ..types.response_union_file_find_result_file_operation_error import ResponseUnionFileFindResultFileOperationError
+from ..types.response_union_file_glob_result_file_operation_error import ResponseUnionFileGlobResultFileOperationError
+from ..types.response_union_file_grep_result_file_operation_error import ResponseUnionFileGrepResultFileOperationError
+from ..types.response_union_file_list_result_file_operation_error import ResponseUnionFileListResultFileOperationError
+from ..types.response_union_file_read_result_file_operation_error import ResponseUnionFileReadResultFileOperationError
+from ..types.response_union_file_replace_result_file_operation_error import (
+    ResponseUnionFileReplaceResultFileOperationError,
+)
+from ..types.response_union_file_search_result_file_operation_error import (
+    ResponseUnionFileSearchResultFileOperationError,
+)
+from ..types.response_union_file_upload_result_file_operation_error import (
+    ResponseUnionFileUploadResultFileOperationError,
+)
+from ..types.response_union_file_write_result_file_operation_error import ResponseUnionFileWriteResultFileOperationError
+from ..types.response_union_str_replace_editor_result_file_operation_error import (
+    ResponseUnionStrReplaceEditorResultFileOperationError,
+)
+from .types.app_schemas_file_watch_wait_request_event_types_item import AppSchemasFileWatchWaitRequestEventTypesItem
 from .types.command import Command
 from .types.str_replace_editor_request_replace_mode import StrReplaceEditorRequestReplaceMode
 
@@ -42,7 +54,7 @@ class RawFileClient:
         end_line: typing.Optional[int] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileReadResult]:
+    ) -> HttpResponse[ResponseUnionFileReadResultFileOperationError]:
         """
         Read file content
 
@@ -65,7 +77,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileReadResult]
+        HttpResponse[ResponseUnionFileReadResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -86,9 +98,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileReadResult,
+                    ResponseUnionFileReadResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileReadResult,  # type: ignore
+                        type_=ResponseUnionFileReadResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -120,7 +132,7 @@ class RawFileClient:
         trailing_newline: typing.Optional[bool] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileWriteResult]:
+    ) -> HttpResponse[ResponseUnionFileWriteResultFileOperationError]:
         """
         Write file content (supports both text and binary files)
 
@@ -155,7 +167,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileWriteResult]
+        HttpResponse[ResponseUnionFileWriteResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -179,9 +191,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileWriteResult,
+                    ResponseUnionFileWriteResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileWriteResult,  # type: ignore
+                        type_=ResponseUnionFileWriteResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -210,7 +222,7 @@ class RawFileClient:
         new_str: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileReplaceResult]:
+    ) -> HttpResponse[ResponseUnionFileReplaceResultFileOperationError]:
         """
         Replace string in file
 
@@ -233,7 +245,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileReplaceResult]
+        HttpResponse[ResponseUnionFileReplaceResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -254,9 +266,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileReplaceResult,
+                    ResponseUnionFileReplaceResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileReplaceResult,  # type: ignore
+                        type_=ResponseUnionFileReplaceResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -284,7 +296,7 @@ class RawFileClient:
         regex: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileSearchResult]:
+    ) -> HttpResponse[ResponseUnionFileSearchResultFileOperationError]:
         """
         Search in file content
 
@@ -304,7 +316,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileSearchResult]
+        HttpResponse[ResponseUnionFileSearchResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -324,9 +336,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileSearchResult,
+                    ResponseUnionFileSearchResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileSearchResult,  # type: ignore
+                        type_=ResponseUnionFileSearchResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -349,7 +361,7 @@ class RawFileClient:
 
     def find_files(
         self, *, path: str, glob: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ResponseFileFindResult]:
+    ) -> HttpResponse[ResponseUnionFileFindResultFileOperationError]:
         """
         Find files by name pattern
 
@@ -366,7 +378,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileFindResult]
+        HttpResponse[ResponseUnionFileFindResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -385,9 +397,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileFindResult,
+                    ResponseUnionFileFindResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileFindResult,  # type: ignore
+                        type_=ResponseUnionFileFindResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -421,16 +433,19 @@ class RawFileClient:
         context_after: typing.Optional[int] = OMIT,
         max_results: typing.Optional[int] = OMIT,
         max_file_size: typing.Optional[str] = OMIT,
+        multiline: typing.Optional[bool] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        type: typing.Optional[str] = OMIT,
         recursive: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileGrepResult]:
+    ) -> HttpResponse[ResponseUnionFileGrepResultFileOperationError]:
         """
         Multi-file content search (grep) with regex or fixed string support
 
         Parameters
         ----------
         path : str
-            Directory path to search
+            File or directory path to search
 
         pattern : str
             Search pattern (regex or fixed string)
@@ -459,6 +474,15 @@ class RawFileClient:
         max_file_size : typing.Optional[str]
             Skip files larger than this size (e.g., 1M, 500K)
 
+        multiline : typing.Optional[bool]
+            Enable multiline matching where . matches newlines and patterns can span lines (rg -U --multiline-dotall)
+
+        offset : typing.Optional[int]
+            Skip first N matches before returning results (for pagination)
+
+        type : typing.Optional[str]
+            File type filter using ripgrep type aliases (e.g., "py", "js", "rust", "go"). Maps to rg --type.
+
         recursive : typing.Optional[bool]
             Search recursively
 
@@ -467,7 +491,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileGrepResult]
+        HttpResponse[ResponseUnionFileGrepResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -484,6 +508,9 @@ class RawFileClient:
                 "context_after": context_after,
                 "max_results": max_results,
                 "max_file_size": max_file_size,
+                "multiline": multiline,
+                "offset": offset,
+                "type": type,
                 "recursive": recursive,
             },
             headers={
@@ -495,9 +522,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileGrepResult,
+                    ResponseUnionFileGrepResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileGrepResult,  # type: ignore
+                        type_=ResponseUnionFileGrepResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -531,7 +558,7 @@ class RawFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileGlobResult]:
+    ) -> HttpResponse[ResponseUnionFileGlobResultFileOperationError]:
         """
         Enhanced file glob matching with optional metadata
 
@@ -569,7 +596,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileGlobResult]
+        HttpResponse[ResponseUnionFileGlobResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -595,9 +622,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileGlobResult,
+                    ResponseUnionFileGlobResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileGlobResult,  # type: ignore
+                        type_=ResponseUnionFileGlobResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -624,7 +651,7 @@ class RawFileClient:
         file: core.File,
         path: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileUploadResult]:
+    ) -> HttpResponse[ResponseUnionFileUploadResultFileOperationError]:
         """
         Upload file using streaming
 
@@ -640,7 +667,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileUploadResult]
+        HttpResponse[ResponseUnionFileUploadResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -659,9 +686,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileUploadResult,
+                    ResponseUnionFileUploadResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileUploadResult,  # type: ignore
+                        type_=ResponseUnionFileUploadResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -684,14 +711,23 @@ class RawFileClient:
 
     @contextlib.contextmanager
     def download_file(
-        self, *, path: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        path: str,
+        change_policy: typing.Optional[FileDownloadChangePolicy] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
-        Download file using FileResponse
+        Download a file.
+
+        When ``change_policy=abort``, the server aborts the download if the source
+        file changes before streaming starts or while bytes are being sent.
 
         Parameters
         ----------
         path : str
+
+        change_policy : typing.Optional[FileDownloadChangePolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
@@ -706,6 +742,7 @@ class RawFileClient:
             method="GET",
             params={
                 "path": path,
+                "change_policy": change_policy,
             },
             request_options=request_options,
         ) as _response:
@@ -718,6 +755,17 @@ class RawFileClient:
                             response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
                         )
                     _response.read()
+                    if _response.status_code == 409:
+                        raise ConflictError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                typing.Optional[typing.Any],
+                                parse_obj_as(
+                                    type_=typing.Optional[typing.Any],  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
                     if _response.status_code == 422:
                         raise UnprocessableEntityError(
                             headers=dict(_response.headers),
@@ -751,7 +799,7 @@ class RawFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseFileListResult]:
+    ) -> HttpResponse[ResponseUnionFileListResultFileOperationError]:
         """
         List path contents with flexible options
 
@@ -789,7 +837,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseFileListResult]
+        HttpResponse[ResponseUnionFileListResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -815,9 +863,9 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileListResult,
+                    ResponseUnionFileListResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileListResult,  # type: ignore
+                        type_=ResponseUnionFileListResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -855,7 +903,7 @@ class RawFileClient:
         slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
         enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ResponseStrReplaceEditorResult]:
+    ) -> HttpResponse[ResponseUnionStrReplaceEditorResultFileOperationError]:
         """
         An filesystem editor tool that allows the agent to
         - view
@@ -910,7 +958,7 @@ class RawFileClient:
 
         Returns
         -------
-        HttpResponse[ResponseStrReplaceEditorResult]
+        HttpResponse[ResponseUnionStrReplaceEditorResultFileOperationError]
             Successful Response
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -940,9 +988,366 @@ class RawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseStrReplaceEditorResult,
+                    ResponseUnionStrReplaceEditorResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseStrReplaceEditorResult,  # type: ignore
+                        type_=ResponseUnionStrReplaceEditorResultFileOperationError,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_list(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/file/watch",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_create(
+        self,
+        *,
+        path: str,
+        recursive: typing.Optional[bool] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        debounce: typing.Optional[int] = OMIT,
+        include_patterns: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        path : str
+            Path of the file or directory to watch
+
+        recursive : typing.Optional[bool]
+            Whether to recursively watch subdirectories
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Directory or glob patterns to exclude
+
+        debounce : typing.Optional[int]
+            Debounce window in milliseconds
+
+        include_patterns : typing.Optional[typing.Sequence[str]]
+            Glob filters; empty means all events are included
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/file/watch",
+            method="POST",
+            json={
+                "path": path,
+                "recursive": recursive,
+                "exclude": exclude,
+                "debounce": debounce,
+                "include_patterns": include_patterns,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_events(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}/events",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_poll(
+        self,
+        watcher_id: str,
+        *,
+        cursor: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        timeout: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        cursor : typing.Optional[int]
+            Cursor returned by the previous call; only events with seq > cursor are returned
+
+        limit : typing.Optional[int]
+            Maximum number of events to return
+
+        timeout : typing.Optional[int]
+            Long-poll wait time in seconds; 0 returns immediately
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}/poll",
+            method="POST",
+            json={
+                "cursor": cursor,
+                "limit": limit,
+                "timeout": timeout,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_wait(
+        self,
+        *,
+        path: str,
+        timeout: typing.Optional[int] = OMIT,
+        event_types: typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        path : str
+            File path to wait for (exact match)
+
+        timeout : typing.Optional[int]
+            Maximum wait time in seconds
+
+        event_types : typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]]
+            Event types to watch
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/file/watch/wait",
+            method="POST",
+            json={
+                "path": path,
+                "timeout": timeout,
+                "event_types": event_types,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def watch_stop(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -976,7 +1381,7 @@ class AsyncRawFileClient:
         end_line: typing.Optional[int] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileReadResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileReadResultFileOperationError]:
         """
         Read file content
 
@@ -999,7 +1404,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileReadResult]
+        AsyncHttpResponse[ResponseUnionFileReadResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1020,9 +1425,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileReadResult,
+                    ResponseUnionFileReadResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileReadResult,  # type: ignore
+                        type_=ResponseUnionFileReadResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1054,7 +1459,7 @@ class AsyncRawFileClient:
         trailing_newline: typing.Optional[bool] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileWriteResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileWriteResultFileOperationError]:
         """
         Write file content (supports both text and binary files)
 
@@ -1089,7 +1494,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileWriteResult]
+        AsyncHttpResponse[ResponseUnionFileWriteResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1113,9 +1518,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileWriteResult,
+                    ResponseUnionFileWriteResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileWriteResult,  # type: ignore
+                        type_=ResponseUnionFileWriteResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1144,7 +1549,7 @@ class AsyncRawFileClient:
         new_str: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileReplaceResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileReplaceResultFileOperationError]:
         """
         Replace string in file
 
@@ -1167,7 +1572,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileReplaceResult]
+        AsyncHttpResponse[ResponseUnionFileReplaceResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1188,9 +1593,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileReplaceResult,
+                    ResponseUnionFileReplaceResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileReplaceResult,  # type: ignore
+                        type_=ResponseUnionFileReplaceResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1218,7 +1623,7 @@ class AsyncRawFileClient:
         regex: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileSearchResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileSearchResultFileOperationError]:
         """
         Search in file content
 
@@ -1238,7 +1643,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileSearchResult]
+        AsyncHttpResponse[ResponseUnionFileSearchResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1258,9 +1663,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileSearchResult,
+                    ResponseUnionFileSearchResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileSearchResult,  # type: ignore
+                        type_=ResponseUnionFileSearchResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1283,7 +1688,7 @@ class AsyncRawFileClient:
 
     async def find_files(
         self, *, path: str, glob: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ResponseFileFindResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileFindResultFileOperationError]:
         """
         Find files by name pattern
 
@@ -1300,7 +1705,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileFindResult]
+        AsyncHttpResponse[ResponseUnionFileFindResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1319,9 +1724,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileFindResult,
+                    ResponseUnionFileFindResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileFindResult,  # type: ignore
+                        type_=ResponseUnionFileFindResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1355,16 +1760,19 @@ class AsyncRawFileClient:
         context_after: typing.Optional[int] = OMIT,
         max_results: typing.Optional[int] = OMIT,
         max_file_size: typing.Optional[str] = OMIT,
+        multiline: typing.Optional[bool] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        type: typing.Optional[str] = OMIT,
         recursive: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileGrepResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileGrepResultFileOperationError]:
         """
         Multi-file content search (grep) with regex or fixed string support
 
         Parameters
         ----------
         path : str
-            Directory path to search
+            File or directory path to search
 
         pattern : str
             Search pattern (regex or fixed string)
@@ -1393,6 +1801,15 @@ class AsyncRawFileClient:
         max_file_size : typing.Optional[str]
             Skip files larger than this size (e.g., 1M, 500K)
 
+        multiline : typing.Optional[bool]
+            Enable multiline matching where . matches newlines and patterns can span lines (rg -U --multiline-dotall)
+
+        offset : typing.Optional[int]
+            Skip first N matches before returning results (for pagination)
+
+        type : typing.Optional[str]
+            File type filter using ripgrep type aliases (e.g., "py", "js", "rust", "go"). Maps to rg --type.
+
         recursive : typing.Optional[bool]
             Search recursively
 
@@ -1401,7 +1818,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileGrepResult]
+        AsyncHttpResponse[ResponseUnionFileGrepResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1418,6 +1835,9 @@ class AsyncRawFileClient:
                 "context_after": context_after,
                 "max_results": max_results,
                 "max_file_size": max_file_size,
+                "multiline": multiline,
+                "offset": offset,
+                "type": type,
                 "recursive": recursive,
             },
             headers={
@@ -1429,9 +1849,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileGrepResult,
+                    ResponseUnionFileGrepResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileGrepResult,  # type: ignore
+                        type_=ResponseUnionFileGrepResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1465,7 +1885,7 @@ class AsyncRawFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileGlobResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileGlobResultFileOperationError]:
         """
         Enhanced file glob matching with optional metadata
 
@@ -1503,7 +1923,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileGlobResult]
+        AsyncHttpResponse[ResponseUnionFileGlobResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1529,9 +1949,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileGlobResult,
+                    ResponseUnionFileGlobResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileGlobResult,  # type: ignore
+                        type_=ResponseUnionFileGlobResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1558,7 +1978,7 @@ class AsyncRawFileClient:
         file: core.File,
         path: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileUploadResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileUploadResultFileOperationError]:
         """
         Upload file using streaming
 
@@ -1574,7 +1994,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileUploadResult]
+        AsyncHttpResponse[ResponseUnionFileUploadResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1593,9 +2013,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileUploadResult,
+                    ResponseUnionFileUploadResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileUploadResult,  # type: ignore
+                        type_=ResponseUnionFileUploadResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1618,14 +2038,23 @@ class AsyncRawFileClient:
 
     @contextlib.asynccontextmanager
     async def download_file(
-        self, *, path: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        path: str,
+        change_policy: typing.Optional[FileDownloadChangePolicy] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
-        Download file using FileResponse
+        Download a file.
+
+        When ``change_policy=abort``, the server aborts the download if the source
+        file changes before streaming starts or while bytes are being sent.
 
         Parameters
         ----------
         path : str
+
+        change_policy : typing.Optional[FileDownloadChangePolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
@@ -1640,6 +2069,7 @@ class AsyncRawFileClient:
             method="GET",
             params={
                 "path": path,
+                "change_policy": change_policy,
             },
             request_options=request_options,
         ) as _response:
@@ -1653,6 +2083,17 @@ class AsyncRawFileClient:
                             data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
                         )
                     await _response.aread()
+                    if _response.status_code == 409:
+                        raise ConflictError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                typing.Optional[typing.Any],
+                                parse_obj_as(
+                                    type_=typing.Optional[typing.Any],  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
                     if _response.status_code == 422:
                         raise UnprocessableEntityError(
                             headers=dict(_response.headers),
@@ -1686,7 +2127,7 @@ class AsyncRawFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseFileListResult]:
+    ) -> AsyncHttpResponse[ResponseUnionFileListResultFileOperationError]:
         """
         List path contents with flexible options
 
@@ -1724,7 +2165,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseFileListResult]
+        AsyncHttpResponse[ResponseUnionFileListResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1750,9 +2191,9 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseFileListResult,
+                    ResponseUnionFileListResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseFileListResult,  # type: ignore
+                        type_=ResponseUnionFileListResultFileOperationError,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1790,7 +2231,7 @@ class AsyncRawFileClient:
         slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
         enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ResponseStrReplaceEditorResult]:
+    ) -> AsyncHttpResponse[ResponseUnionStrReplaceEditorResultFileOperationError]:
         """
         An filesystem editor tool that allows the agent to
         - view
@@ -1845,7 +2286,7 @@ class AsyncRawFileClient:
 
         Returns
         -------
-        AsyncHttpResponse[ResponseStrReplaceEditorResult]
+        AsyncHttpResponse[ResponseUnionStrReplaceEditorResultFileOperationError]
             Successful Response
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1875,9 +2316,366 @@ class AsyncRawFileClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ResponseStrReplaceEditorResult,
+                    ResponseUnionStrReplaceEditorResultFileOperationError,
                     parse_obj_as(
-                        type_=ResponseStrReplaceEditorResult,  # type: ignore
+                        type_=ResponseUnionStrReplaceEditorResultFileOperationError,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_list(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/file/watch",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_create(
+        self,
+        *,
+        path: str,
+        recursive: typing.Optional[bool] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        debounce: typing.Optional[int] = OMIT,
+        include_patterns: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        path : str
+            Path of the file or directory to watch
+
+        recursive : typing.Optional[bool]
+            Whether to recursively watch subdirectories
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Directory or glob patterns to exclude
+
+        debounce : typing.Optional[int]
+            Debounce window in milliseconds
+
+        include_patterns : typing.Optional[typing.Sequence[str]]
+            Glob filters; empty means all events are included
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/file/watch",
+            method="POST",
+            json={
+                "path": path,
+                "recursive": recursive,
+                "exclude": exclude,
+                "debounce": debounce,
+                "include_patterns": include_patterns,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_events(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}/events",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_poll(
+        self,
+        watcher_id: str,
+        *,
+        cursor: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        timeout: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        cursor : typing.Optional[int]
+            Cursor returned by the previous call; only events with seq > cursor are returned
+
+        limit : typing.Optional[int]
+            Maximum number of events to return
+
+        timeout : typing.Optional[int]
+            Long-poll wait time in seconds; 0 returns immediately
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}/poll",
+            method="POST",
+            json={
+                "cursor": cursor,
+                "limit": limit,
+                "timeout": timeout,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_wait(
+        self,
+        *,
+        path: str,
+        timeout: typing.Optional[int] = OMIT,
+        event_types: typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        path : str
+            File path to wait for (exact match)
+
+        timeout : typing.Optional[int]
+            Maximum wait time in seconds
+
+        event_types : typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]]
+            Event types to watch
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/file/watch/wait",
+            method="POST",
+            json={
+                "path": path,
+                "timeout": timeout,
+                "event_types": event_types,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        HttpValidationError,
+                        parse_obj_as(
+                            type_=HttpValidationError,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def watch_stop(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Optional[typing.Any]]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Optional[typing.Any]]
+            Successful Response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/file/watch/{jsonable_encoder(watcher_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Optional[typing.Any],
+                    parse_obj_as(
+                        type_=typing.Optional[typing.Any],  # type: ignore
                         object_=_response.json(),
                     ),
                 )

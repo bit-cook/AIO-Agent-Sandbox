@@ -10,6 +10,7 @@ import { BrowserPage } from "./api/resources/browserPage/client/Client.js";
 import { BrowserState } from "./api/resources/browserState/client/Client.js";
 import { BrowserTabs } from "./api/resources/browserTabs/client/Client.js";
 import { Code } from "./api/resources/code/client/Client.js";
+import { Display } from "./api/resources/display/client/Client.js";
 import { File_ } from "./api/resources/file/client/Client.js";
 import { Jupyter } from "./api/resources/jupyter/client/Client.js";
 import { Mcp } from "./api/resources/mcp/client/Client.js";
@@ -49,6 +50,7 @@ export class SandboxClient {
     protected _util: Util | undefined;
     protected _skills: Skills | undefined;
     protected _proxy: Proxy | undefined;
+    protected _display: Display | undefined;
     protected _auth: Auth | undefined;
 
     constructor(_options: SandboxClient.Options) {
@@ -136,6 +138,10 @@ export class SandboxClient {
 
     public get proxy(): Proxy {
         return (this._proxy ??= new Proxy(this._options));
+    }
+
+    public get display(): Display {
+        return (this._display ??= new Display(this._options));
     }
 
     public get auth(): Auth {

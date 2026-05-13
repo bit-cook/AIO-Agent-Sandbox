@@ -33,16 +33,19 @@ if typing.TYPE_CHECKING:
     from .command_status import CommandStatus
     from .console_record import ConsoleRecord
     from .dependency_command_result import DependencyCommandResult
+    from .display_record_result import DisplayRecordResult
     from .double_click_action import DoubleClickAction
     from .drag_rel_action import DragRelAction
     from .drag_to_action import DragToAction
     from .embedded_resource import EmbeddedResource
     from .file_content_encoding import FileContentEncoding
+    from .file_download_change_policy import FileDownloadChangePolicy
     from .file_find_result import FileFindResult
     from .file_glob_result import FileGlobResult
     from .file_grep_result import FileGrepResult
     from .file_info import FileInfo
     from .file_list_result import FileListResult
+    from .file_operation_error import FileOperationError
     from .file_read_result import FileReadResult
     from .file_replace_result import FileReplaceResult
     from .file_search_result import FileSearchResult
@@ -62,7 +65,6 @@ if typing.TYPE_CHECKING:
     from .key_up_action import KeyUpAction
     from .language import Language
     from .list_tools_result import ListToolsResult
-    from .mode import Mode
     from .mouse_down_action import MouseDownAction
     from .mouse_up_action import MouseUpAction
     from .move_rel_action import MoveRelAction
@@ -77,10 +79,23 @@ if typing.TYPE_CHECKING:
     from .node_js_session_list_response import NodeJsSessionListResponse
     from .node_js_session_response import NodeJsSessionResponse
     from .node_js_update_session_response import NodeJsUpdateSessionResponse
+    from .observation_cgroup_snapshot import ObservationCgroupSnapshot
+    from .observation_disk_snapshot import ObservationDiskSnapshot
+    from .observation_event import ObservationEvent
+    from .observation_export_result import ObservationExportResult
+    from .observation_live_snapshot import ObservationLiveSnapshot
+    from .observation_mode import ObservationMode
+    from .observation_process_snapshot import ObservationProcessSnapshot
+    from .observation_report_info import ObservationReportInfo
+    from .observation_start_result import ObservationStartResult
+    from .observation_status import ObservationStatus
+    from .observation_stop_result import ObservationStopResult
     from .press_action import PressAction
     from .proxy_bypass_request import ProxyBypassRequest
     from .proxy_diagnose_result import ProxyDiagnoseResult
+    from .proxy_health_check import ProxyHealthCheck
     from .proxy_mapping_route import ProxyMappingRoute
+    from .proxy_upstream_info import ProxyUpstreamInfo
     from .resolution import Resolution
     from .resource import Resource
     from .resource_link import ResourceLink
@@ -104,21 +119,15 @@ if typing.TYPE_CHECKING:
     from .response_code_execute_response import ResponseCodeExecuteResponse
     from .response_code_info_response import ResponseCodeInfoResponse
     from .response_dict import ResponseDict
-    from .response_file_find_result import ResponseFileFindResult
-    from .response_file_glob_result import ResponseFileGlobResult
-    from .response_file_grep_result import ResponseFileGrepResult
-    from .response_file_list_result import ResponseFileListResult
-    from .response_file_read_result import ResponseFileReadResult
-    from .response_file_replace_result import ResponseFileReplaceResult
-    from .response_file_search_result import ResponseFileSearchResult
-    from .response_file_upload_result import ResponseFileUploadResult
-    from .response_file_write_result import ResponseFileWriteResult
+    from .response_display_record_result import ResponseDisplayRecordResult
     from .response_jupyter_create_session_response import ResponseJupyterCreateSessionResponse
     from .response_jupyter_execute_response import ResponseJupyterExecuteResponse
     from .response_jupyter_info_response import ResponseJupyterInfoResponse
     from .response_list import ResponseList
     from .response_list_bash_session_info import ResponseListBashSessionInfo
+    from .response_list_observation_report_info import ResponseListObservationReportInfo
     from .response_list_proxy_mapping_route import ResponseListProxyMappingRoute
+    from .response_list_sandbox_hook import ResponseListSandboxHook
     from .response_list_str import ResponseListStr
     from .response_list_tools_result_model import ResponseListToolsResultModel
     from .response_node_js_create_session_response import ResponseNodeJsCreateSessionResponse
@@ -128,11 +137,21 @@ if typing.TYPE_CHECKING:
     from .response_node_js_session_list_response import ResponseNodeJsSessionListResponse
     from .response_node_js_session_response import ResponseNodeJsSessionResponse
     from .response_node_js_update_session_response import ResponseNodeJsUpdateSessionResponse
+    from .response_observation_export_result import ResponseObservationExportResult
+    from .response_observation_live_snapshot import ResponseObservationLiveSnapshot
+    from .response_observation_report_info import ResponseObservationReportInfo
+    from .response_observation_start_result import ResponseObservationStartResult
+    from .response_observation_status import ResponseObservationStatus
+    from .response_observation_stop_result import ResponseObservationStopResult
     from .response_proxy_diagnose_result import ResponseProxyDiagnoseResult
+    from .response_proxy_health_check import ResponseProxyHealthCheck
     from .response_proxy_mapping_route import ResponseProxyMappingRoute
+    from .response_proxy_upstream_info import ResponseProxyUpstreamInfo
+    from .response_sandbox_hook import ResponseSandboxHook
     from .response_shell_command_result import ResponseShellCommandResult
     from .response_shell_create_session_response import ResponseShellCreateSessionResponse
     from .response_shell_kill_result import ResponseShellKillResult
+    from .response_shell_session_stats import ResponseShellSessionStats
     from .response_shell_view_result import ResponseShellViewResult
     from .response_shell_wait_result import ResponseShellWaitResult
     from .response_shell_write_result import ResponseShellWriteResult
@@ -141,12 +160,58 @@ if typing.TYPE_CHECKING:
     from .response_skill_metadata_collection import ResponseSkillMetadataCollection
     from .response_skill_registration_result import ResponseSkillRegistrationResult
     from .response_str import ResponseStr
-    from .response_str_replace_editor_result import ResponseStrReplaceEditorResult
+    from .response_union_file_find_result_file_operation_error import ResponseUnionFileFindResultFileOperationError
+    from .response_union_file_find_result_file_operation_error_data import (
+        ResponseUnionFileFindResultFileOperationErrorData,
+    )
+    from .response_union_file_glob_result_file_operation_error import ResponseUnionFileGlobResultFileOperationError
+    from .response_union_file_glob_result_file_operation_error_data import (
+        ResponseUnionFileGlobResultFileOperationErrorData,
+    )
+    from .response_union_file_grep_result_file_operation_error import ResponseUnionFileGrepResultFileOperationError
+    from .response_union_file_grep_result_file_operation_error_data import (
+        ResponseUnionFileGrepResultFileOperationErrorData,
+    )
+    from .response_union_file_list_result_file_operation_error import ResponseUnionFileListResultFileOperationError
+    from .response_union_file_list_result_file_operation_error_data import (
+        ResponseUnionFileListResultFileOperationErrorData,
+    )
+    from .response_union_file_read_result_file_operation_error import ResponseUnionFileReadResultFileOperationError
+    from .response_union_file_read_result_file_operation_error_data import (
+        ResponseUnionFileReadResultFileOperationErrorData,
+    )
+    from .response_union_file_replace_result_file_operation_error import (
+        ResponseUnionFileReplaceResultFileOperationError,
+    )
+    from .response_union_file_replace_result_file_operation_error_data import (
+        ResponseUnionFileReplaceResultFileOperationErrorData,
+    )
+    from .response_union_file_search_result_file_operation_error import ResponseUnionFileSearchResultFileOperationError
+    from .response_union_file_search_result_file_operation_error_data import (
+        ResponseUnionFileSearchResultFileOperationErrorData,
+    )
+    from .response_union_file_upload_result_file_operation_error import ResponseUnionFileUploadResultFileOperationError
+    from .response_union_file_upload_result_file_operation_error_data import (
+        ResponseUnionFileUploadResultFileOperationErrorData,
+    )
+    from .response_union_file_write_result_file_operation_error import ResponseUnionFileWriteResultFileOperationError
+    from .response_union_file_write_result_file_operation_error_data import (
+        ResponseUnionFileWriteResultFileOperationErrorData,
+    )
+    from .response_union_proxy_upstream_info_none_type import ResponseUnionProxyUpstreamInfoNoneType
+    from .response_union_str_replace_editor_result_file_operation_error import (
+        ResponseUnionStrReplaceEditorResultFileOperationError,
+    )
+    from .response_union_str_replace_editor_result_file_operation_error_data import (
+        ResponseUnionStrReplaceEditorResultFileOperationErrorData,
+    )
+    from .restart_mode import RestartMode
     from .restart_request import RestartRequest
     from .right_click_action import RightClickAction
     from .route_response_model import RouteResponseModel
     from .runtime_env import RuntimeEnv
     from .sandbox_detail import SandboxDetail
+    from .sandbox_hook import SandboxHook
     from .sandbox_response import SandboxResponse
     from .scroll_action import ScrollAction
     from .session_info import SessionInfo
@@ -155,6 +220,7 @@ if typing.TYPE_CHECKING:
     from .shell_create_session_response import ShellCreateSessionResponse
     from .shell_kill_result import ShellKillResult
     from .shell_session_info import ShellSessionInfo
+    from .shell_session_stats import ShellSessionStats
     from .shell_view_result import ShellViewResult
     from .shell_wait_result import ShellWaitResult
     from .shell_write_result import ShellWriteResult
@@ -162,6 +228,7 @@ if typing.TYPE_CHECKING:
     from .skill_metadata import SkillMetadata
     from .skill_metadata_collection import SkillMetadataCollection
     from .skill_registration_result import SkillRegistrationResult
+    from .status import Status
     from .str_replace_editor_result import StrReplaceEditorResult
     from .system_env import SystemEnv
     from .text_content import TextContent
@@ -204,16 +271,19 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CommandStatus": ".command_status",
     "ConsoleRecord": ".console_record",
     "DependencyCommandResult": ".dependency_command_result",
+    "DisplayRecordResult": ".display_record_result",
     "DoubleClickAction": ".double_click_action",
     "DragRelAction": ".drag_rel_action",
     "DragToAction": ".drag_to_action",
     "EmbeddedResource": ".embedded_resource",
     "FileContentEncoding": ".file_content_encoding",
+    "FileDownloadChangePolicy": ".file_download_change_policy",
     "FileFindResult": ".file_find_result",
     "FileGlobResult": ".file_glob_result",
     "FileGrepResult": ".file_grep_result",
     "FileInfo": ".file_info",
     "FileListResult": ".file_list_result",
+    "FileOperationError": ".file_operation_error",
     "FileReadResult": ".file_read_result",
     "FileReplaceResult": ".file_replace_result",
     "FileSearchResult": ".file_search_result",
@@ -233,7 +303,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "KeyUpAction": ".key_up_action",
     "Language": ".language",
     "ListToolsResult": ".list_tools_result",
-    "Mode": ".mode",
     "MouseDownAction": ".mouse_down_action",
     "MouseUpAction": ".mouse_up_action",
     "MoveRelAction": ".move_rel_action",
@@ -248,10 +317,23 @@ _dynamic_imports: typing.Dict[str, str] = {
     "NodeJsSessionListResponse": ".node_js_session_list_response",
     "NodeJsSessionResponse": ".node_js_session_response",
     "NodeJsUpdateSessionResponse": ".node_js_update_session_response",
+    "ObservationCgroupSnapshot": ".observation_cgroup_snapshot",
+    "ObservationDiskSnapshot": ".observation_disk_snapshot",
+    "ObservationEvent": ".observation_event",
+    "ObservationExportResult": ".observation_export_result",
+    "ObservationLiveSnapshot": ".observation_live_snapshot",
+    "ObservationMode": ".observation_mode",
+    "ObservationProcessSnapshot": ".observation_process_snapshot",
+    "ObservationReportInfo": ".observation_report_info",
+    "ObservationStartResult": ".observation_start_result",
+    "ObservationStatus": ".observation_status",
+    "ObservationStopResult": ".observation_stop_result",
     "PressAction": ".press_action",
     "ProxyBypassRequest": ".proxy_bypass_request",
     "ProxyDiagnoseResult": ".proxy_diagnose_result",
+    "ProxyHealthCheck": ".proxy_health_check",
     "ProxyMappingRoute": ".proxy_mapping_route",
+    "ProxyUpstreamInfo": ".proxy_upstream_info",
     "Resolution": ".resolution",
     "Resource": ".resource",
     "ResourceLink": ".resource_link",
@@ -273,21 +355,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseCodeExecuteResponse": ".response_code_execute_response",
     "ResponseCodeInfoResponse": ".response_code_info_response",
     "ResponseDict": ".response_dict",
-    "ResponseFileFindResult": ".response_file_find_result",
-    "ResponseFileGlobResult": ".response_file_glob_result",
-    "ResponseFileGrepResult": ".response_file_grep_result",
-    "ResponseFileListResult": ".response_file_list_result",
-    "ResponseFileReadResult": ".response_file_read_result",
-    "ResponseFileReplaceResult": ".response_file_replace_result",
-    "ResponseFileSearchResult": ".response_file_search_result",
-    "ResponseFileUploadResult": ".response_file_upload_result",
-    "ResponseFileWriteResult": ".response_file_write_result",
+    "ResponseDisplayRecordResult": ".response_display_record_result",
     "ResponseJupyterCreateSessionResponse": ".response_jupyter_create_session_response",
     "ResponseJupyterExecuteResponse": ".response_jupyter_execute_response",
     "ResponseJupyterInfoResponse": ".response_jupyter_info_response",
     "ResponseList": ".response_list",
     "ResponseListBashSessionInfo": ".response_list_bash_session_info",
+    "ResponseListObservationReportInfo": ".response_list_observation_report_info",
     "ResponseListProxyMappingRoute": ".response_list_proxy_mapping_route",
+    "ResponseListSandboxHook": ".response_list_sandbox_hook",
     "ResponseListStr": ".response_list_str",
     "ResponseListToolsResultModel": ".response_list_tools_result_model",
     "ResponseNodeJsCreateSessionResponse": ".response_node_js_create_session_response",
@@ -297,11 +373,21 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseNodeJsSessionListResponse": ".response_node_js_session_list_response",
     "ResponseNodeJsSessionResponse": ".response_node_js_session_response",
     "ResponseNodeJsUpdateSessionResponse": ".response_node_js_update_session_response",
+    "ResponseObservationExportResult": ".response_observation_export_result",
+    "ResponseObservationLiveSnapshot": ".response_observation_live_snapshot",
+    "ResponseObservationReportInfo": ".response_observation_report_info",
+    "ResponseObservationStartResult": ".response_observation_start_result",
+    "ResponseObservationStatus": ".response_observation_status",
+    "ResponseObservationStopResult": ".response_observation_stop_result",
     "ResponseProxyDiagnoseResult": ".response_proxy_diagnose_result",
+    "ResponseProxyHealthCheck": ".response_proxy_health_check",
     "ResponseProxyMappingRoute": ".response_proxy_mapping_route",
+    "ResponseProxyUpstreamInfo": ".response_proxy_upstream_info",
+    "ResponseSandboxHook": ".response_sandbox_hook",
     "ResponseShellCommandResult": ".response_shell_command_result",
     "ResponseShellCreateSessionResponse": ".response_shell_create_session_response",
     "ResponseShellKillResult": ".response_shell_kill_result",
+    "ResponseShellSessionStats": ".response_shell_session_stats",
     "ResponseShellViewResult": ".response_shell_view_result",
     "ResponseShellWaitResult": ".response_shell_wait_result",
     "ResponseShellWriteResult": ".response_shell_write_result",
@@ -310,12 +396,34 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseSkillMetadataCollection": ".response_skill_metadata_collection",
     "ResponseSkillRegistrationResult": ".response_skill_registration_result",
     "ResponseStr": ".response_str",
-    "ResponseStrReplaceEditorResult": ".response_str_replace_editor_result",
+    "ResponseUnionFileFindResultFileOperationError": ".response_union_file_find_result_file_operation_error",
+    "ResponseUnionFileFindResultFileOperationErrorData": ".response_union_file_find_result_file_operation_error_data",
+    "ResponseUnionFileGlobResultFileOperationError": ".response_union_file_glob_result_file_operation_error",
+    "ResponseUnionFileGlobResultFileOperationErrorData": ".response_union_file_glob_result_file_operation_error_data",
+    "ResponseUnionFileGrepResultFileOperationError": ".response_union_file_grep_result_file_operation_error",
+    "ResponseUnionFileGrepResultFileOperationErrorData": ".response_union_file_grep_result_file_operation_error_data",
+    "ResponseUnionFileListResultFileOperationError": ".response_union_file_list_result_file_operation_error",
+    "ResponseUnionFileListResultFileOperationErrorData": ".response_union_file_list_result_file_operation_error_data",
+    "ResponseUnionFileReadResultFileOperationError": ".response_union_file_read_result_file_operation_error",
+    "ResponseUnionFileReadResultFileOperationErrorData": ".response_union_file_read_result_file_operation_error_data",
+    "ResponseUnionFileReplaceResultFileOperationError": ".response_union_file_replace_result_file_operation_error",
+    "ResponseUnionFileReplaceResultFileOperationErrorData": ".response_union_file_replace_result_file_operation_error_data",
+    "ResponseUnionFileSearchResultFileOperationError": ".response_union_file_search_result_file_operation_error",
+    "ResponseUnionFileSearchResultFileOperationErrorData": ".response_union_file_search_result_file_operation_error_data",
+    "ResponseUnionFileUploadResultFileOperationError": ".response_union_file_upload_result_file_operation_error",
+    "ResponseUnionFileUploadResultFileOperationErrorData": ".response_union_file_upload_result_file_operation_error_data",
+    "ResponseUnionFileWriteResultFileOperationError": ".response_union_file_write_result_file_operation_error",
+    "ResponseUnionFileWriteResultFileOperationErrorData": ".response_union_file_write_result_file_operation_error_data",
+    "ResponseUnionProxyUpstreamInfoNoneType": ".response_union_proxy_upstream_info_none_type",
+    "ResponseUnionStrReplaceEditorResultFileOperationError": ".response_union_str_replace_editor_result_file_operation_error",
+    "ResponseUnionStrReplaceEditorResultFileOperationErrorData": ".response_union_str_replace_editor_result_file_operation_error_data",
+    "RestartMode": ".restart_mode",
     "RestartRequest": ".restart_request",
     "RightClickAction": ".right_click_action",
     "RouteResponseModel": ".route_response_model",
     "RuntimeEnv": ".runtime_env",
     "SandboxDetail": ".sandbox_detail",
+    "SandboxHook": ".sandbox_hook",
     "SandboxResponse": ".sandbox_response",
     "ScrollAction": ".scroll_action",
     "SessionInfo": ".session_info",
@@ -324,6 +432,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ShellCreateSessionResponse": ".shell_create_session_response",
     "ShellKillResult": ".shell_kill_result",
     "ShellSessionInfo": ".shell_session_info",
+    "ShellSessionStats": ".shell_session_stats",
     "ShellViewResult": ".shell_view_result",
     "ShellWaitResult": ".shell_wait_result",
     "ShellWriteResult": ".shell_write_result",
@@ -331,6 +440,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SkillMetadata": ".skill_metadata",
     "SkillMetadataCollection": ".skill_metadata_collection",
     "SkillRegistrationResult": ".skill_registration_result",
+    "Status": ".status",
     "StrReplaceEditorResult": ".str_replace_editor_result",
     "SystemEnv": ".system_env",
     "TextContent": ".text_content",
@@ -395,16 +505,19 @@ __all__ = [
     "CommandStatus",
     "ConsoleRecord",
     "DependencyCommandResult",
+    "DisplayRecordResult",
     "DoubleClickAction",
     "DragRelAction",
     "DragToAction",
     "EmbeddedResource",
     "FileContentEncoding",
+    "FileDownloadChangePolicy",
     "FileFindResult",
     "FileGlobResult",
     "FileGrepResult",
     "FileInfo",
     "FileListResult",
+    "FileOperationError",
     "FileReadResult",
     "FileReplaceResult",
     "FileSearchResult",
@@ -424,7 +537,6 @@ __all__ = [
     "KeyUpAction",
     "Language",
     "ListToolsResult",
-    "Mode",
     "MouseDownAction",
     "MouseUpAction",
     "MoveRelAction",
@@ -439,10 +551,23 @@ __all__ = [
     "NodeJsSessionListResponse",
     "NodeJsSessionResponse",
     "NodeJsUpdateSessionResponse",
+    "ObservationCgroupSnapshot",
+    "ObservationDiskSnapshot",
+    "ObservationEvent",
+    "ObservationExportResult",
+    "ObservationLiveSnapshot",
+    "ObservationMode",
+    "ObservationProcessSnapshot",
+    "ObservationReportInfo",
+    "ObservationStartResult",
+    "ObservationStatus",
+    "ObservationStopResult",
     "PressAction",
     "ProxyBypassRequest",
     "ProxyDiagnoseResult",
+    "ProxyHealthCheck",
     "ProxyMappingRoute",
+    "ProxyUpstreamInfo",
     "Resolution",
     "Resource",
     "ResourceLink",
@@ -464,21 +589,15 @@ __all__ = [
     "ResponseCodeExecuteResponse",
     "ResponseCodeInfoResponse",
     "ResponseDict",
-    "ResponseFileFindResult",
-    "ResponseFileGlobResult",
-    "ResponseFileGrepResult",
-    "ResponseFileListResult",
-    "ResponseFileReadResult",
-    "ResponseFileReplaceResult",
-    "ResponseFileSearchResult",
-    "ResponseFileUploadResult",
-    "ResponseFileWriteResult",
+    "ResponseDisplayRecordResult",
     "ResponseJupyterCreateSessionResponse",
     "ResponseJupyterExecuteResponse",
     "ResponseJupyterInfoResponse",
     "ResponseList",
     "ResponseListBashSessionInfo",
+    "ResponseListObservationReportInfo",
     "ResponseListProxyMappingRoute",
+    "ResponseListSandboxHook",
     "ResponseListStr",
     "ResponseListToolsResultModel",
     "ResponseNodeJsCreateSessionResponse",
@@ -488,11 +607,21 @@ __all__ = [
     "ResponseNodeJsSessionListResponse",
     "ResponseNodeJsSessionResponse",
     "ResponseNodeJsUpdateSessionResponse",
+    "ResponseObservationExportResult",
+    "ResponseObservationLiveSnapshot",
+    "ResponseObservationReportInfo",
+    "ResponseObservationStartResult",
+    "ResponseObservationStatus",
+    "ResponseObservationStopResult",
     "ResponseProxyDiagnoseResult",
+    "ResponseProxyHealthCheck",
     "ResponseProxyMappingRoute",
+    "ResponseProxyUpstreamInfo",
+    "ResponseSandboxHook",
     "ResponseShellCommandResult",
     "ResponseShellCreateSessionResponse",
     "ResponseShellKillResult",
+    "ResponseShellSessionStats",
     "ResponseShellViewResult",
     "ResponseShellWaitResult",
     "ResponseShellWriteResult",
@@ -501,12 +630,34 @@ __all__ = [
     "ResponseSkillMetadataCollection",
     "ResponseSkillRegistrationResult",
     "ResponseStr",
-    "ResponseStrReplaceEditorResult",
+    "ResponseUnionFileFindResultFileOperationError",
+    "ResponseUnionFileFindResultFileOperationErrorData",
+    "ResponseUnionFileGlobResultFileOperationError",
+    "ResponseUnionFileGlobResultFileOperationErrorData",
+    "ResponseUnionFileGrepResultFileOperationError",
+    "ResponseUnionFileGrepResultFileOperationErrorData",
+    "ResponseUnionFileListResultFileOperationError",
+    "ResponseUnionFileListResultFileOperationErrorData",
+    "ResponseUnionFileReadResultFileOperationError",
+    "ResponseUnionFileReadResultFileOperationErrorData",
+    "ResponseUnionFileReplaceResultFileOperationError",
+    "ResponseUnionFileReplaceResultFileOperationErrorData",
+    "ResponseUnionFileSearchResultFileOperationError",
+    "ResponseUnionFileSearchResultFileOperationErrorData",
+    "ResponseUnionFileUploadResultFileOperationError",
+    "ResponseUnionFileUploadResultFileOperationErrorData",
+    "ResponseUnionFileWriteResultFileOperationError",
+    "ResponseUnionFileWriteResultFileOperationErrorData",
+    "ResponseUnionProxyUpstreamInfoNoneType",
+    "ResponseUnionStrReplaceEditorResultFileOperationError",
+    "ResponseUnionStrReplaceEditorResultFileOperationErrorData",
+    "RestartMode",
     "RestartRequest",
     "RightClickAction",
     "RouteResponseModel",
     "RuntimeEnv",
     "SandboxDetail",
+    "SandboxHook",
     "SandboxResponse",
     "ScrollAction",
     "SessionInfo",
@@ -515,6 +666,7 @@ __all__ = [
     "ShellCreateSessionResponse",
     "ShellKillResult",
     "ShellSessionInfo",
+    "ShellSessionStats",
     "ShellViewResult",
     "ShellWaitResult",
     "ShellWriteResult",
@@ -522,6 +674,7 @@ __all__ = [
     "SkillMetadata",
     "SkillMetadataCollection",
     "SkillRegistrationResult",
+    "Status",
     "StrReplaceEditorResult",
     "SystemEnv",
     "TextContent",

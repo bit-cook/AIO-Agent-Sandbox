@@ -6,17 +6,27 @@ from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.file_content_encoding import FileContentEncoding
-from ..types.response_file_find_result import ResponseFileFindResult
-from ..types.response_file_glob_result import ResponseFileGlobResult
-from ..types.response_file_grep_result import ResponseFileGrepResult
-from ..types.response_file_list_result import ResponseFileListResult
-from ..types.response_file_read_result import ResponseFileReadResult
-from ..types.response_file_replace_result import ResponseFileReplaceResult
-from ..types.response_file_search_result import ResponseFileSearchResult
-from ..types.response_file_upload_result import ResponseFileUploadResult
-from ..types.response_file_write_result import ResponseFileWriteResult
-from ..types.response_str_replace_editor_result import ResponseStrReplaceEditorResult
+from ..types.file_download_change_policy import FileDownloadChangePolicy
+from ..types.response_union_file_find_result_file_operation_error import ResponseUnionFileFindResultFileOperationError
+from ..types.response_union_file_glob_result_file_operation_error import ResponseUnionFileGlobResultFileOperationError
+from ..types.response_union_file_grep_result_file_operation_error import ResponseUnionFileGrepResultFileOperationError
+from ..types.response_union_file_list_result_file_operation_error import ResponseUnionFileListResultFileOperationError
+from ..types.response_union_file_read_result_file_operation_error import ResponseUnionFileReadResultFileOperationError
+from ..types.response_union_file_replace_result_file_operation_error import (
+    ResponseUnionFileReplaceResultFileOperationError,
+)
+from ..types.response_union_file_search_result_file_operation_error import (
+    ResponseUnionFileSearchResultFileOperationError,
+)
+from ..types.response_union_file_upload_result_file_operation_error import (
+    ResponseUnionFileUploadResultFileOperationError,
+)
+from ..types.response_union_file_write_result_file_operation_error import ResponseUnionFileWriteResultFileOperationError
+from ..types.response_union_str_replace_editor_result_file_operation_error import (
+    ResponseUnionStrReplaceEditorResultFileOperationError,
+)
 from .raw_client import AsyncRawFileClient, RawFileClient
+from .types.app_schemas_file_watch_wait_request_event_types_item import AppSchemasFileWatchWaitRequestEventTypesItem
 from .types.command import Command
 from .types.str_replace_editor_request_replace_mode import StrReplaceEditorRequestReplaceMode
 
@@ -47,7 +57,7 @@ class FileClient:
         end_line: typing.Optional[int] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileReadResult:
+    ) -> ResponseUnionFileReadResultFileOperationError:
         """
         Read file content
 
@@ -70,7 +80,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileReadResult
+        ResponseUnionFileReadResultFileOperationError
             Successful Response
 
         Examples
@@ -100,7 +110,7 @@ class FileClient:
         trailing_newline: typing.Optional[bool] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileWriteResult:
+    ) -> ResponseUnionFileWriteResultFileOperationError:
         """
         Write file content (supports both text and binary files)
 
@@ -135,7 +145,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileWriteResult
+        ResponseUnionFileWriteResultFileOperationError
             Successful Response
 
         Examples
@@ -170,7 +180,7 @@ class FileClient:
         new_str: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileReplaceResult:
+    ) -> ResponseUnionFileReplaceResultFileOperationError:
         """
         Replace string in file
 
@@ -193,7 +203,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileReplaceResult
+        ResponseUnionFileReplaceResultFileOperationError
             Successful Response
 
         Examples
@@ -221,7 +231,7 @@ class FileClient:
         regex: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileSearchResult:
+    ) -> ResponseUnionFileSearchResultFileOperationError:
         """
         Search in file content
 
@@ -241,7 +251,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileSearchResult
+        ResponseUnionFileSearchResultFileOperationError
             Successful Response
 
         Examples
@@ -261,7 +271,7 @@ class FileClient:
 
     def find_files(
         self, *, path: str, glob: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> ResponseFileFindResult:
+    ) -> ResponseUnionFileFindResultFileOperationError:
         """
         Find files by name pattern
 
@@ -278,7 +288,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileFindResult
+        ResponseUnionFileFindResultFileOperationError
             Successful Response
 
         Examples
@@ -309,16 +319,19 @@ class FileClient:
         context_after: typing.Optional[int] = OMIT,
         max_results: typing.Optional[int] = OMIT,
         max_file_size: typing.Optional[str] = OMIT,
+        multiline: typing.Optional[bool] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        type: typing.Optional[str] = OMIT,
         recursive: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileGrepResult:
+    ) -> ResponseUnionFileGrepResultFileOperationError:
         """
         Multi-file content search (grep) with regex or fixed string support
 
         Parameters
         ----------
         path : str
-            Directory path to search
+            File or directory path to search
 
         pattern : str
             Search pattern (regex or fixed string)
@@ -347,6 +360,15 @@ class FileClient:
         max_file_size : typing.Optional[str]
             Skip files larger than this size (e.g., 1M, 500K)
 
+        multiline : typing.Optional[bool]
+            Enable multiline matching where . matches newlines and patterns can span lines (rg -U --multiline-dotall)
+
+        offset : typing.Optional[int]
+            Skip first N matches before returning results (for pagination)
+
+        type : typing.Optional[str]
+            File type filter using ripgrep type aliases (e.g., "py", "js", "rust", "go"). Maps to rg --type.
+
         recursive : typing.Optional[bool]
             Search recursively
 
@@ -355,7 +377,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileGrepResult
+        ResponseUnionFileGrepResultFileOperationError
             Successful Response
 
         Examples
@@ -381,6 +403,9 @@ class FileClient:
             context_after=context_after,
             max_results=max_results,
             max_file_size=max_file_size,
+            multiline=multiline,
+            offset=offset,
+            type=type,
             recursive=recursive,
             request_options=request_options,
         )
@@ -399,7 +424,7 @@ class FileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileGlobResult:
+    ) -> ResponseUnionFileGlobResultFileOperationError:
         """
         Enhanced file glob matching with optional metadata
 
@@ -437,7 +462,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileGlobResult
+        ResponseUnionFileGlobResultFileOperationError
             Successful Response
 
         Examples
@@ -472,7 +497,7 @@ class FileClient:
         file: core.File,
         path: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileUploadResult:
+    ) -> ResponseUnionFileUploadResultFileOperationError:
         """
         Upload file using streaming
 
@@ -488,7 +513,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileUploadResult
+        ResponseUnionFileUploadResultFileOperationError
             Successful Response
 
         Examples
@@ -504,14 +529,23 @@ class FileClient:
         return _response.data
 
     def download_file(
-        self, *, path: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        path: str,
+        change_policy: typing.Optional[FileDownloadChangePolicy] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[bytes]:
         """
-        Download file using FileResponse
+        Download a file.
+
+        When ``change_policy=abort``, the server aborts the download if the source
+        file changes before streaming starts or while bytes are being sent.
 
         Parameters
         ----------
         path : str
+
+        change_policy : typing.Optional[FileDownloadChangePolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
@@ -532,7 +566,9 @@ class FileClient:
             path="path",
         )
         """
-        with self._raw_client.download_file(path=path, request_options=request_options) as r:
+        with self._raw_client.download_file(
+            path=path, change_policy=change_policy, request_options=request_options
+        ) as r:
             yield from r.data
 
     def list_path(
@@ -548,7 +584,7 @@ class FileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileListResult:
+    ) -> ResponseUnionFileListResultFileOperationError:
         """
         List path contents with flexible options
 
@@ -586,7 +622,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseFileListResult
+        ResponseUnionFileListResultFileOperationError
             Successful Response
 
         Examples
@@ -631,7 +667,7 @@ class FileClient:
         slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
         enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseStrReplaceEditorResult:
+    ) -> ResponseUnionStrReplaceEditorResultFileOperationError:
         """
         An filesystem editor tool that allows the agent to
         - view
@@ -686,7 +722,7 @@ class FileClient:
 
         Returns
         -------
-        ResponseStrReplaceEditorResult
+        ResponseUnionStrReplaceEditorResultFileOperationError
             Successful Response
 
         Examples
@@ -719,6 +755,238 @@ class FileClient:
         )
         return _response.data
 
+    def watch_list(self, *, request_options: typing.Optional[RequestOptions] = None) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_list()
+        """
+        _response = self._raw_client.watch_list(request_options=request_options)
+        return _response.data
+
+    def watch_create(
+        self,
+        *,
+        path: str,
+        recursive: typing.Optional[bool] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        debounce: typing.Optional[int] = OMIT,
+        include_patterns: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        path : str
+            Path of the file or directory to watch
+
+        recursive : typing.Optional[bool]
+            Whether to recursively watch subdirectories
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Directory or glob patterns to exclude
+
+        debounce : typing.Optional[int]
+            Debounce window in milliseconds
+
+        include_patterns : typing.Optional[typing.Sequence[str]]
+            Glob filters; empty means all events are included
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_create(
+            path="path",
+        )
+        """
+        _response = self._raw_client.watch_create(
+            path=path,
+            recursive=recursive,
+            exclude=exclude,
+            debounce=debounce,
+            include_patterns=include_patterns,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def watch_events(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_events(
+            watcher_id="watcher_id",
+        )
+        """
+        _response = self._raw_client.watch_events(watcher_id, request_options=request_options)
+        return _response.data
+
+    def watch_poll(
+        self,
+        watcher_id: str,
+        *,
+        cursor: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        timeout: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        cursor : typing.Optional[int]
+            Cursor returned by the previous call; only events with seq > cursor are returned
+
+        limit : typing.Optional[int]
+            Maximum number of events to return
+
+        timeout : typing.Optional[int]
+            Long-poll wait time in seconds; 0 returns immediately
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_poll(
+            watcher_id="watcher_id",
+        )
+        """
+        _response = self._raw_client.watch_poll(
+            watcher_id, cursor=cursor, limit=limit, timeout=timeout, request_options=request_options
+        )
+        return _response.data
+
+    def watch_wait(
+        self,
+        *,
+        path: str,
+        timeout: typing.Optional[int] = OMIT,
+        event_types: typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        path : str
+            File path to wait for (exact match)
+
+        timeout : typing.Optional[int]
+            Maximum wait time in seconds
+
+        event_types : typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]]
+            Event types to watch
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_wait(
+            path="path",
+        )
+        """
+        _response = self._raw_client.watch_wait(
+            path=path, timeout=timeout, event_types=event_types, request_options=request_options
+        )
+        return _response.data
+
+    def watch_stop(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        from agent_sandbox import Sandbox
+
+        client = Sandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.file.watch_stop(
+            watcher_id="watcher_id",
+        )
+        """
+        _response = self._raw_client.watch_stop(watcher_id, request_options=request_options)
+        return _response.data
+
 
 class AsyncFileClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -743,7 +1011,7 @@ class AsyncFileClient:
         end_line: typing.Optional[int] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileReadResult:
+    ) -> ResponseUnionFileReadResultFileOperationError:
         """
         Read file content
 
@@ -766,7 +1034,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileReadResult
+        ResponseUnionFileReadResultFileOperationError
             Successful Response
 
         Examples
@@ -804,7 +1072,7 @@ class AsyncFileClient:
         trailing_newline: typing.Optional[bool] = OMIT,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileWriteResult:
+    ) -> ResponseUnionFileWriteResultFileOperationError:
         """
         Write file content (supports both text and binary files)
 
@@ -839,7 +1107,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileWriteResult
+        ResponseUnionFileWriteResultFileOperationError
             Successful Response
 
         Examples
@@ -882,7 +1150,7 @@ class AsyncFileClient:
         new_str: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileReplaceResult:
+    ) -> ResponseUnionFileReplaceResultFileOperationError:
         """
         Replace string in file
 
@@ -905,7 +1173,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileReplaceResult
+        ResponseUnionFileReplaceResultFileOperationError
             Successful Response
 
         Examples
@@ -941,7 +1209,7 @@ class AsyncFileClient:
         regex: str,
         sudo: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileSearchResult:
+    ) -> ResponseUnionFileSearchResultFileOperationError:
         """
         Search in file content
 
@@ -961,7 +1229,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileSearchResult
+        ResponseUnionFileSearchResultFileOperationError
             Successful Response
 
         Examples
@@ -991,7 +1259,7 @@ class AsyncFileClient:
 
     async def find_files(
         self, *, path: str, glob: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> ResponseFileFindResult:
+    ) -> ResponseUnionFileFindResultFileOperationError:
         """
         Find files by name pattern
 
@@ -1008,7 +1276,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileFindResult
+        ResponseUnionFileFindResultFileOperationError
             Successful Response
 
         Examples
@@ -1047,16 +1315,19 @@ class AsyncFileClient:
         context_after: typing.Optional[int] = OMIT,
         max_results: typing.Optional[int] = OMIT,
         max_file_size: typing.Optional[str] = OMIT,
+        multiline: typing.Optional[bool] = OMIT,
+        offset: typing.Optional[int] = OMIT,
+        type: typing.Optional[str] = OMIT,
         recursive: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileGrepResult:
+    ) -> ResponseUnionFileGrepResultFileOperationError:
         """
         Multi-file content search (grep) with regex or fixed string support
 
         Parameters
         ----------
         path : str
-            Directory path to search
+            File or directory path to search
 
         pattern : str
             Search pattern (regex or fixed string)
@@ -1085,6 +1356,15 @@ class AsyncFileClient:
         max_file_size : typing.Optional[str]
             Skip files larger than this size (e.g., 1M, 500K)
 
+        multiline : typing.Optional[bool]
+            Enable multiline matching where . matches newlines and patterns can span lines (rg -U --multiline-dotall)
+
+        offset : typing.Optional[int]
+            Skip first N matches before returning results (for pagination)
+
+        type : typing.Optional[str]
+            File type filter using ripgrep type aliases (e.g., "py", "js", "rust", "go"). Maps to rg --type.
+
         recursive : typing.Optional[bool]
             Search recursively
 
@@ -1093,7 +1373,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileGrepResult
+        ResponseUnionFileGrepResultFileOperationError
             Successful Response
 
         Examples
@@ -1127,6 +1407,9 @@ class AsyncFileClient:
             context_after=context_after,
             max_results=max_results,
             max_file_size=max_file_size,
+            multiline=multiline,
+            offset=offset,
+            type=type,
             recursive=recursive,
             request_options=request_options,
         )
@@ -1145,7 +1428,7 @@ class AsyncFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileGlobResult:
+    ) -> ResponseUnionFileGlobResultFileOperationError:
         """
         Enhanced file glob matching with optional metadata
 
@@ -1183,7 +1466,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileGlobResult
+        ResponseUnionFileGlobResultFileOperationError
             Successful Response
 
         Examples
@@ -1226,7 +1509,7 @@ class AsyncFileClient:
         file: core.File,
         path: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileUploadResult:
+    ) -> ResponseUnionFileUploadResultFileOperationError:
         """
         Upload file using streaming
 
@@ -1242,7 +1525,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileUploadResult
+        ResponseUnionFileUploadResultFileOperationError
             Successful Response
 
         Examples
@@ -1266,14 +1549,23 @@ class AsyncFileClient:
         return _response.data
 
     async def download_file(
-        self, *, path: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        path: str,
+        change_policy: typing.Optional[FileDownloadChangePolicy] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[bytes]:
         """
-        Download file using FileResponse
+        Download a file.
+
+        When ``change_policy=abort``, the server aborts the download if the source
+        file changes before streaming starts or while bytes are being sent.
 
         Parameters
         ----------
         path : str
+
+        change_policy : typing.Optional[FileDownloadChangePolicy]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
@@ -1302,7 +1594,9 @@ class AsyncFileClient:
 
         asyncio.run(main())
         """
-        async with self._raw_client.download_file(path=path, request_options=request_options) as r:
+        async with self._raw_client.download_file(
+            path=path, change_policy=change_policy, request_options=request_options
+        ) as r:
             async for _chunk in r.data:
                 yield _chunk
 
@@ -1319,7 +1613,7 @@ class AsyncFileClient:
         sort_by: typing.Optional[str] = OMIT,
         sort_desc: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseFileListResult:
+    ) -> ResponseUnionFileListResultFileOperationError:
         """
         List path contents with flexible options
 
@@ -1357,7 +1651,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseFileListResult
+        ResponseUnionFileListResultFileOperationError
             Successful Response
 
         Examples
@@ -1410,7 +1704,7 @@ class AsyncFileClient:
         slide_range: typing.Optional[typing.Sequence[int]] = OMIT,
         enable_metadata: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ResponseStrReplaceEditorResult:
+    ) -> ResponseUnionStrReplaceEditorResultFileOperationError:
         """
         An filesystem editor tool that allows the agent to
         - view
@@ -1465,7 +1759,7 @@ class AsyncFileClient:
 
         Returns
         -------
-        ResponseStrReplaceEditorResult
+        ResponseUnionStrReplaceEditorResultFileOperationError
             Successful Response
 
         Examples
@@ -1504,4 +1798,286 @@ class AsyncFileClient:
             enable_metadata=enable_metadata,
             request_options=request_options,
         )
+        return _response.data
+
+    async def watch_list(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_list()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_list(request_options=request_options)
+        return _response.data
+
+    async def watch_create(
+        self,
+        *,
+        path: str,
+        recursive: typing.Optional[bool] = OMIT,
+        exclude: typing.Optional[typing.Sequence[str]] = OMIT,
+        debounce: typing.Optional[int] = OMIT,
+        include_patterns: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        path : str
+            Path of the file or directory to watch
+
+        recursive : typing.Optional[bool]
+            Whether to recursively watch subdirectories
+
+        exclude : typing.Optional[typing.Sequence[str]]
+            Directory or glob patterns to exclude
+
+        debounce : typing.Optional[int]
+            Debounce window in milliseconds
+
+        include_patterns : typing.Optional[typing.Sequence[str]]
+            Glob filters; empty means all events are included
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_create(
+                path="path",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_create(
+            path=path,
+            recursive=recursive,
+            exclude=exclude,
+            debounce=debounce,
+            include_patterns=include_patterns,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def watch_events(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_events(
+                watcher_id="watcher_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_events(watcher_id, request_options=request_options)
+        return _response.data
+
+    async def watch_poll(
+        self,
+        watcher_id: str,
+        *,
+        cursor: typing.Optional[int] = OMIT,
+        limit: typing.Optional[int] = OMIT,
+        timeout: typing.Optional[int] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        cursor : typing.Optional[int]
+            Cursor returned by the previous call; only events with seq > cursor are returned
+
+        limit : typing.Optional[int]
+            Maximum number of events to return
+
+        timeout : typing.Optional[int]
+            Long-poll wait time in seconds; 0 returns immediately
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_poll(
+                watcher_id="watcher_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_poll(
+            watcher_id, cursor=cursor, limit=limit, timeout=timeout, request_options=request_options
+        )
+        return _response.data
+
+    async def watch_wait(
+        self,
+        *,
+        path: str,
+        timeout: typing.Optional[int] = OMIT,
+        event_types: typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        path : str
+            File path to wait for (exact match)
+
+        timeout : typing.Optional[int]
+            Maximum wait time in seconds
+
+        event_types : typing.Optional[typing.Sequence[AppSchemasFileWatchWaitRequestEventTypesItem]]
+            Event types to watch
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_wait(
+                path="path",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_wait(
+            path=path, timeout=timeout, event_types=event_types, request_options=request_options
+        )
+        return _response.data
+
+    async def watch_stop(
+        self, watcher_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[typing.Any]:
+        """
+        Parameters
+        ----------
+        watcher_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Optional[typing.Any]
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from agent_sandbox import AsyncSandbox
+
+        client = AsyncSandbox(
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.file.watch_stop(
+                watcher_id="watcher_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.watch_stop(watcher_id, request_options=request_options)
         return _response.data
